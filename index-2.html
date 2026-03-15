@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sketch Attitude — Learn Expressive Character Drawing</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#111210;--bg2:#191a17;--bg3:#22231f;--card:#1d1e1a;--border:#2e2f2a;
+  --text:#e8e6dc;--muted:#7a7a6e;--accent:#c8f135;--accent2:#e84040;
+  --accent3:#3ecfff;--accent4:#f5c842;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-mono:'Space Mono',monospace;
+  --font-body:'Nunito',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:100;padding:0 0 env(safe-area-inset-bottom)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 8px;background:none;border:none;color:var(--muted);font-family:var(--font-mono);font-size:9px;cursor:pointer;transition:color .2s;letter-spacing:.5px}
+.nav-btn.active{color:var(--accent)}
+.nav-btn svg{width:20px;height:20px}
+.screen{display:none;padding:16px 16px 90px;max-width:480px;margin:0 auto;animation:fadeIn .25s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+h2{font-family:var(--font-display);font-size:34px;letter-spacing:.5px;color:var(--text)}
+h3{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+p{font-size:14px;line-height:1.6;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:1px;font-weight:700}
+.tag-green{background:#c8f13520;color:var(--accent);border:1px solid #c8f13540}
+.tag-yellow{background:#f5c84220;color:var(--accent4);border:1px solid #f5c84240}
+.tag-blue{background:#3ecfff20;color:var(--accent3);border:1px solid #3ecfff40}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:8px;font-family:var(--font-mono);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .15s;border:none}
+.btn-primary{background:var(--accent);color:#111;text-transform:uppercase}
+.btn-primary:hover{background:#d4ff45;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border);text-transform:uppercase}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.progress-bar{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .5s ease}
+.hero{padding:40px 0 24px}
+.hero-eyebrow{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+.hero-title{font-family:var(--font-display);font-size:68px;line-height:.9;letter-spacing:1px;margin-bottom:16px}
+.hero-title span{color:var(--accent)}
+.hero-sub{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+.divider{border:none;height:1px;background:linear-gradient(90deg,var(--accent)20%,transparent);margin:20px 0;opacity:.4}
+.inspo-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.inspo-scroll::-webkit-scrollbar{display:none}
+.inspo-card{flex-shrink:0;width:190px;scroll-snap-align:start;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--card);cursor:pointer;transition:border-color .2s}
+.inspo-card:hover{border-color:var(--accent)}
+.inspo-card img{width:100%;height:150px;object-fit:cover;display:block;background:var(--bg3)}
+.inspo-card-label{padding:8px 10px}
+.inspo-card-title{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--text);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+.inspo-card-sub{font-size:11px;color:var(--muted)}
+.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.img-cell{border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--bg3);cursor:pointer;transition:border-color .2s;position:relative}
+.img-cell:hover{border-color:var(--accent)}
+.img-cell img{width:100%;height:130px;object-fit:cover;display:block}
+.img-cell-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,#000d);padding:20px 8px 6px;font-family:var(--font-mono);font-size:9px;color:#fff;letter-spacing:1px;text-transform:uppercase}
+.lightbox{position:fixed;inset:0;background:#000d;z-index:300;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s}
+.lightbox-inner{max-width:400px;width:100%;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;position:relative}
+.lightbox-inner img{width:100%;max-height:55vh;object-fit:contain;background:var(--bg3)}
+.lightbox-body{padding:14px}
+.lightbox-title{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.lightbox-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.lightbox-close{position:absolute;top:10px;right:10px;background:var(--bg2);border:1px solid var(--border);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:14px;z-index:1}
+.principle-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s}
+.principle-card:hover{border-color:var(--accent)}
+.principle-card.done{border-left:3px solid var(--accent);opacity:.7}
+.principle-num{font-family:var(--font-display);font-size:42px;color:var(--bg3);line-height:1;float:right;margin-left:8px}
+.principle-title{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.principle-body{font-size:13px;color:var(--muted);line-height:1.5}
+.principle-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.principle-detail.open{display:block}
+.detail-label{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px}
+.detail-text{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.principle-img{width:100%;height:130px;object-fit:cover;border-radius:6px;margin-bottom:10px;border:1px solid var(--border);background:var(--bg3)}
+.day-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:16px}
+.day-cell{aspect-ratio:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;color:var(--muted)}
+.day-cell.done{background:#c8f13520;border-color:var(--accent);color:var(--accent)}
+.day-cell.today{background:var(--accent);color:#111;border-color:var(--accent)}
+.day-cell.locked{opacity:.3;cursor:default}
+.timer-display{font-family:var(--font-display);font-size:96px;letter-spacing:2px;text-align:center;color:var(--text);line-height:1;margin:24px 0}
+.timer-display.warning{color:var(--accent2)}
+.timer-presets{display:flex;gap:8px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+.preset-btn{padding:8px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s}
+.preset-btn.active{background:var(--accent);color:#111;border-color:var(--accent)}
+.round-counter{font-family:var(--font-mono);font-size:12px;color:var(--muted);text-align:center;letter-spacing:2px;margin-bottom:8px}
+.face-prompt-card{background:var(--card);border:2px solid var(--accent3);border-radius:12px;padding:20px;text-align:center;margin-bottom:16px}
+.face-prompt-title{font-family:var(--font-display);font-size:28px;color:var(--accent3);margin-bottom:4px}
+.face-prompt-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.face-trait-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.face-trait{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.5px}
+.face-trait span{display:block;font-size:13px;color:var(--text);font-weight:700;margin-top:2px}
+.studio-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;margin-top:12px;display:block}
+.studio-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:var(--font-body);font-size:14px;transition:border-color .2s;outline:none}
+.studio-input:focus{border-color:var(--accent)}
+.studio-input::placeholder{color:var(--muted)}
+.character-card{background:var(--card);border:2px solid var(--accent);border-radius:12px;padding:20px;animation:fadeIn .3s ease}
+.character-card h2{font-family:var(--font-display);font-size:36px;color:var(--accent);margin-bottom:4px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.stat-num{font-family:var(--font-display);font-size:40px;color:var(--text);line-height:1}
+.stat-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+.ach-card{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.ach-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ach-icon.unlocked{background:#c8f13520;border:1px solid #c8f13540}
+.ach-icon.locked{background:var(--bg3);border:1px solid var(--border);filter:grayscale(1);opacity:.4}
+.ach-title{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.ach-desc{font-size:12px;color:var(--muted)}
+.streak-badge{display:inline-flex;align-items:center;gap:6px;background:#f5c84215;border:1px solid #f5c84230;border-radius:20px;padding:5px 12px;font-family:var(--font-mono);font-size:12px;color:var(--accent4);font-weight:700}
+.moto-card{background:var(--bg3);border-left:3px solid var(--accent);padding:12px 14px;border-radius:0 8px 8px 0;margin-bottom:16px}
+.moto-text{font-family:var(--font-mono);font-size:13px;color:var(--text);font-style:italic;line-height:1.5}
+.section-div{display:flex;align-items:center;gap:8px;margin:20px 0 14px}
+.section-div::after{content:'';flex:1;height:1px;background:var(--border)}
+.notice{background:#c8f13510;border:1px solid #c8f13530;border-radius:8px;padding:10px 12px;font-size:13px;color:var(--accent);margin-bottom:12px;font-family:var(--font-mono)}
+.exercise-step{display:flex;gap:10px;margin-bottom:12px}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#111;font-family:var(--font-mono);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;color:var(--muted);line-height:1.6}
+.rating-row{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.rating-item{display:flex;align-items:center;gap:10px}
+.rating-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;width:72px;text-transform:uppercase}
+.rating-slider{flex:1;-webkit-appearance:none;appearance:none;height:3px;background:var(--bg3);border-radius:2px;outline:none}
+.rating-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer}
+.rating-val{font-family:var(--font-mono);font-size:11px;color:var(--accent);width:20px;text-align:right}
+.filter-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-btn{flex-shrink:0;padding:6px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;font-family:var(--font-mono);font-size:10px;color:var(--muted);cursor:pointer;transition:all .15s;letter-spacing:1px;text-transform:uppercase}
+.filter-btn.active{background:var(--accent);color:#111;border-color:var(--accent)}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="hero">
+    <div class="hero-eyebrow">★ Daily Training App</div>
+    <div class="hero-title">SKETCH<br><span>ATTITUDE</span></div>
+    <p class="hero-sub">Learn expressive character drawing, one day at a time. Inspired by edgy British comic and punk visual traditions.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="goTo('train')">START TRAINING</button>
+      <button class="btn btn-outline" onclick="goTo('inspo')">INSPIRATION</button>
+    </div>
+  </div>
+  <hr class="divider">
+  <h3>Inspiration</h3>
+  <div class="inspo-scroll" id="home-inspo-scroll"></div>
+  <button class="btn btn-outline" onclick="goTo('inspo')" style="width:100%;justify-content:center;margin-top:8px;margin-bottom:16px">VIEW ALL REFERENCES →</button>
+  <h3>Today's Motivation</h3>
+  <div class="moto-card"><div class="moto-text" id="daily-quote"></div></div>
+  <h3>Your Progress</h3>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Day streak</div></div>
+    <div class="stat-card"><div class="stat-num">23%</div><div class="stat-label">30-day plan</div></div>
+  </div>
+  <div class="card card-accent">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div><h3 style="margin-bottom:2px">TODAY'S MISSION</h3><div style="font-family:var(--font-mono);font-size:13px;color:var(--text);font-weight:700">Day 7 — Character Faces</div></div>
+      <span class="tag tag-yellow">20 MIN</span>
+    </div>
+    <p style="margin-bottom:12px">Draw 20 faces on one page. Focus on cheekbones, eyelids, grin shapes, and asymmetry.</p>
+    <button class="btn btn-primary" onclick="goTo('train')" style="width:100%">OPEN TODAY'S EXERCISE →</button>
+  </div>
+  <div class="section-div"><h3 style="margin:0">QUICK ACCESS</h3></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <button class="btn btn-outline" onclick="goTo('timer')" style="justify-content:center;padding:14px">⏱ TIMER</button>
+    <button class="btn btn-outline" onclick="goTo('studio')" style="justify-content:center;padding:14px">✦ STUDIO</button>
+    <button class="btn btn-outline" onclick="goTo('facelab')" style="justify-content:center;padding:14px">◑ FACE LAB</button>
+    <button class="btn btn-outline" onclick="goTo('inspo')" style="justify-content:center;padding:14px">🖼 INSPO</button>
+  </div>
+</div>
+
+<!-- INSPIRATION -->
+<div class="screen" id="screen-inspo">
+  <div style="padding-top:20px">
+    <h3>Visual References</h3>
+    <h2 style="margin-bottom:8px">INSPIRATION</h2>
+    <p style="margin-bottom:14px">Study these references. Notice the attitude, the lines, the shapes. Then put the phone down and draw.</p>
+  </div>
+  <div class="filter-row" id="inspo-filters"></div>
+  <div class="img-grid" id="inspo-grid"></div>
+  <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:4px">
+    <p style="font-size:11px;color:var(--muted);line-height:1.6">Images are open-licensed references for educational study only. All rights belong to their respective creators. Sketch Attitude is an independent educational tool.</p>
+  </div>
+</div>
+
+<!-- PRINCIPLES -->
+<div class="screen" id="screen-principles">
+  <div style="padding-top:20px">
+    <h3>The Method</h3>
+    <h2 style="margin-bottom:8px">12 PRINCIPLES</h2>
+    <p style="margin-bottom:16px">The complete visual language of expressive punk-inspired character design.</p>
+  </div>
+  <div id="principles-list"></div>
+</div>
+
+<!-- TRAIN -->
+<div class="screen" id="screen-train">
+  <div style="padding-top:20px">
+    <h3>Your Journey</h3>
+    <h2 style="margin-bottom:8px">30-DAY PROGRAM</h2>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <p>You're on day 7. Keep going.</p>
+      <span class="tag tag-green">23% DONE</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:23%"></div></div>
+    <div class="notice">Tap any day to open the exercise.</div>
+  </div>
+  <div id="day-phases"></div>
+</div>
+
+<!-- TIMER -->
+<div class="screen" id="screen-timer">
+  <div style="padding-top:20px;text-align:center">
+    <h3>Gesture Timer</h3>
+    <h2 style="margin-bottom:4px">TIMED DRILL MODE</h2>
+    <p style="margin-bottom:20px">Fast drawing preserves energy. Set a time, draw fast, repeat.</p>
+  </div>
+  <div class="timer-presets">
+    <button class="preset-btn active" onclick="setPreset(30,this)">30 SEC</button>
+    <button class="preset-btn" onclick="setPreset(60,this)">60 SEC</button>
+    <button class="preset-btn" onclick="setPreset(120,this)">2 MIN</button>
+    <button class="preset-btn" onclick="setPreset(300,this)">5 MIN</button>
+  </div>
+  <div class="round-counter">ROUND <span id="round-num">1</span> OF <span id="round-total">10</span></div>
+  <div class="timer-display" id="timer-disp">00:30</div>
+  <div class="progress-bar" style="margin-bottom:20px"><div class="progress-fill" id="timer-prog" style="width:100%"></div></div>
+  <div style="display:flex;gap:10px;justify-content:center;margin-bottom:20px">
+    <button class="btn btn-primary" id="timer-btn" onclick="toggleTimer()">START</button>
+    <button class="btn btn-outline" onclick="resetTimer()">RESET</button>
+    <button class="btn btn-outline" onclick="skipRound()">SKIP ▶</button>
+  </div>
+  <div class="card">
+    <h3 style="margin-bottom:8px">POSE PROMPT</h3>
+    <div style="font-family:var(--font-mono);font-size:13px;color:var(--text);line-height:1.7" id="pose-prompt">Slouched figure, hands in pockets, weight on one leg. Feel the gravity.</div>
+    <button class="btn btn-outline" onclick="newPosePrompt()" style="margin-top:10px;width:100%">NEW PROMPT</button>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+    <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">ROUNDS:</span>
+    <input type="range" min="1" max="30" value="10" id="round-setter" oninput="setRounds(this.value)" style="flex:1">
+    <span style="font-family:var(--font-mono);font-size:11px;color:var(--accent)" id="round-display">10</span>
+  </div>
+</div>
+
+<!-- FACE LAB -->
+<div class="screen" id="screen-facelab">
+  <div style="padding-top:20px">
+    <h3>Anatomy Focus</h3>
+    <h2 style="margin-bottom:8px">FACE LAB</h2>
+    <p style="margin-bottom:16px">Targeted expression and feature training. Hit randomize for a new prompt.</p>
+  </div>
+  <div class="face-prompt-card">
+    <div class="face-prompt-title" id="face-prompt-title">ARROGANT GRIN</div>
+    <div class="face-prompt-desc" id="face-prompt-desc">Upper lip curled asymmetrically. One eyebrow raised. Heavy upper eyelid. Chin slightly forward. Teeth just showing on one side.</div>
+  </div>
+  <div class="face-trait-grid">
+    <div class="face-trait">EYES<span id="ft-eyes">Half-lidded, asymmetric</span></div>
+    <div class="face-trait">JAW<span id="ft-jaw">Sharp, angular</span></div>
+    <div class="face-trait">MOUTH<span id="ft-mouth">Crooked smirk</span></div>
+    <div class="face-trait">ENERGY<span id="ft-energy">Cocky, dominant</span></div>
+  </div>
+  <button class="btn btn-primary" onclick="randomizeFace()" style="width:100%;margin-bottom:14px">↻ RANDOMIZE FACE</button>
+  <div class="section-div"><h3 style="margin:0">FACE REFERENCES</h3></div>
+  <div class="img-grid" id="face-ref-grid"></div>
+</div>
+
+<!-- STUDIO -->
+<div class="screen" id="screen-studio">
+  <div style="padding-top:20px">
+    <h3>Build Your Character</h3>
+    <h2 style="margin-bottom:8px">CHARACTER STUDIO</h2>
+    <p style="margin-bottom:16px">Define a character. Build their identity. Draw them with attitude.</p>
+  </div>
+  <label class="studio-label">Character Name</label>
+  <input class="studio-input" id="char-name" placeholder="e.g. Ryn, Zero, Blaze...">
+  <label class="studio-label">Archetype / Vibe</label>
+  <select class="studio-input" id="char-arch"><option value="">Select archetype...</option><option>Antihero</option><option>Streetwise Musician</option><option>Rogue Mechanic</option><option>Mutant Outsider</option><option>Underground DJ</option><option>Biker Ronin</option><option>Punk Witch</option><option>Corporate Dropout</option></select>
+  <label class="studio-label">Pose Style</label>
+  <select class="studio-input" id="char-pose"><option value="">Select pose...</option><option>Slouched swagger</option><option>Tense standoff</option><option>Mid-motion stride</option><option>Leaning against wall</option><option>Arms crossed, weight shifted</option><option>Looking over shoulder</option></select>
+  <label class="studio-label">Clothing Keywords</label>
+  <input class="studio-input" id="char-clothes" placeholder="e.g. oversized jacket, torn tights, platform boots...">
+  <label class="studio-label">Expression</label>
+  <select class="studio-input" id="char-expr"><option value="">Select expression...</option><option>Tired contempt</option><option>Sharp grin</option><option>Cold stare</option><option>Manic energy</option><option>Bitter smirk</option><option>Blank intensity</option></select>
+  <label class="studio-label">Notes / Backstory Hook</label>
+  <textarea class="studio-input" id="char-notes" rows="3" placeholder="e.g. lost their band, now plays alone on rooftops..."></textarea>
+  <div style="display:flex;gap:8px;margin-top:14px">
+    <button class="btn btn-primary" onclick="buildCharacter()" style="flex:1">BUILD CARD</button>
+    <button class="btn btn-outline" onclick="randomChar()" style="flex:1">↻ RANDOM</button>
+  </div>
+  <div id="char-card-output" style="margin-top:16px"></div>
+  <div class="section-div"><h3 style="margin:0">CHARACTER REFERENCES</h3></div>
+  <div class="img-grid" id="char-ref-grid"></div>
+</div>
+
+<!-- PROGRESS -->
+<div class="screen" id="screen-progress">
+  <div style="padding-top:20px">
+    <h3>Your Stats</h3>
+    <h2 style="margin-bottom:16px">PROGRESS</h2>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+    <div class="streak-badge">🔥 7-DAY STREAK</div>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Days Done</div></div>
+    <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Principles</div></div>
+    <div class="stat-card"><div class="stat-num">140</div><div class="stat-label">Min Practiced</div></div>
+    <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">Gestures</div></div>
+  </div>
+  <div class="section-div"><h3 style="margin:0">30-DAY OVERVIEW</h3></div>
+  <div class="progress-bar" style="height:8px"><div class="progress-fill" style="width:23%"></div></div>
+  <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin:4px 0 16px;text-align:right">7 / 30 DAYS — 23%</div>
+  <div class="section-div"><h3 style="margin:0">ACHIEVEMENTS</h3></div>
+  <div id="achievements-list"></div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="goTo('home')">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 9.5L10 3l7 6.5V17a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg>HOME
+  </button>
+  <button class="nav-btn" id="nav-inspo" onclick="goTo('inspo')">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="16" height="13" rx="2"/><path d="M2 13l4-4 3 3 3-4 6 5"/></svg>INSPO
+  </button>
+  <button class="nav-btn" id="nav-train" onclick="goTo('train')">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 7v3l2 2"/></svg>TRAIN
+  </button>
+  <button class="nav-btn" id="nav-timer" onclick="goTo('timer')">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10 6v4l2.5 2.5M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>TIMER
+  </button>
+  <button class="nav-btn" id="nav-progress" onclick="goTo('progress')">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 14l4-4 3 3 5-6"/></svg>STATS
+  </button>
+</nav>
+
+<script>
+const IMG_SRCS=[
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Cpath%20d%3D%22M180%20260%20Q200%20180%20240%20140%20Q270%20110%20260%2060%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%223%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Ccircle%20cx%3D%22260%22%20cy%3D%2252%22%20r%3D%2214%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M240%20140%20Q210%20155%20190%20170%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M240%20140%20Q265%20150%20280%20160%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M260%20200%20Q245%20230%20235%20260%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M260%20200%20Q275%20228%20282%20258%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M100%20200%20Q160%20170%20200%20150%20Q240%20130%20300%20120%20Q340%20115%20400%20130%22%20stroke%3D%22%232e2f2a%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20stroke-dasharray%3D%224%204%22/%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3EENERGY%20LINE%20FIRST%3C/text%3E%0A%0A%3C/svg%3E",
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Ccircle%20cx%3D%22240%22%20cy%3D%2255%22%20r%3D%2218%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%0A%20%20%3Cline%20x1%3D%22240%22%20y1%3D%2273%22%20x2%3D%22235%22%20y2%3D%22145%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cline%20x1%3D%22235%22%20y1%3D%22145%22%20x2%3D%22215%22%20y2%3D%22170%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cline%20x1%3D%22235%22%20y1%3D%22145%22%20x2%3D%22258%22%20y2%3D%22165%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cline%20x1%3D%22215%22%20y1%3D%22170%22%20x2%3D%22200%22%20y2%3D%22200%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cline%20x1%3D%22215%22%20y1%3D%22170%22%20x2%3D%22195%22%20y2%3D%22240%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cline%20x1%3D%22258%22%20y1%3D%22165%22%20x2%3D%22278%22%20y2%3D%22255%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cline%20x1%3D%22240%22%20y1%3D%22100%22%20x2%3D%22200%22%20y2%3D%22120%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cline%20x1%3D%22240%22%20y1%3D%22100%22%20x2%3D%22275%22%20y2%3D%22110%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cline%20x1%3D%22210%22%20y1%3D%22166%22%20x2%3D%22262%22%20y2%3D%22162%22%20stroke%3D%22%23e84040%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%223%203%22/%3E%0A%20%20%3Ctext%20x%3D%22175%22%20y%3D%22172%22%20font-family%3D%22monospace%22%20font-size%3D%229%22%20fill%3D%22%23e84040%22%3Ehip%20tilt%3C/text%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3EPUSH%20THE%20ATTITUDE%3C/text%3E%0A%0A%3C/svg%3E",
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Cellipse%20cx%3D%22240%22%20cy%3D%2252%22%20rx%3D%2220%22%20ry%3D%2222%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Cpath%20d%3D%22M215%2074%20Q200%20100%20195%20140%20Q210%20155%20240%20158%20Q270%20155%20285%20140%20Q280%20100%20265%2074%20Z%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Cpath%20d%3D%22M215%2074%20Q195%2095%20175%20115%20Q165%20130%20170%20145%20Q182%20140%20195%20130%20Q200%20118%20212%20108%20Z%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Cpath%20d%3D%22M265%2074%20Q285%2095%20305%20115%20Q315%20130%20310%20145%20Q298%20140%20285%20130%20Q280%20118%20268%20108%20Z%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Cpath%20d%3D%22M210%20155%20Q200%20190%20195%20245%20Q205%20248%20215%20245%20Q222%20210%20230%20185%20Q238%20210%20245%20245%20Q255%20248%20265%20245%20Q260%20190%20250%20155%20Z%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3EREAD%20THE%20SILHOUETTE%3C/text%3E%0A%0A%3C/svg%3E",
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%2238%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%229%22%20fill%3D%22%233ecfff%22%20letter-spacing%3D%222%22%3EEYE%20STUDIES%3C/text%3E%0A%20%20%3Cpath%20d%3D%22M120%2075%20Q145%2060%20170%2075%20Q145%2088%20120%2075%20Z%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%3Cellipse%20cx%3D%22145%22%20cy%3D%2275%22%20rx%3D%228%22%20ry%3D%227%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Cpath%20d%3D%22M120%2072%20Q145%2058%20170%2072%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M310%2075%20Q338%2065%20362%2075%20Q338%2083%20310%2075%20Z%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%3Cellipse%20cx%3D%22336%22%20cy%3D%2275%22%20rx%3D%227%22%20ry%3D%226%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Cpath%20d%3D%22M310%2072%20Q325%2062%20340%2070%20Q352%2068%20362%2073%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M115%20155%20Q142%20135%20168%20148%20Q142%20162%20115%20155%20Z%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%3Cellipse%20cx%3D%22141%22%20cy%3D%22152%22%20rx%3D%228%22%20ry%3D%226%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Cpath%20d%3D%22M115%20148%20Q142%20132%20168%20143%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%223%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M312%20148%20Q340%20138%20364%20155%20Q340%20165%20312%20155%20Z%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%3Cellipse%20cx%3D%22338%22%20cy%3D%22153%22%20rx%3D%227%22%20ry%3D%225%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Cpath%20d%3D%22M312%20145%20Q340%20135%20364%20150%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%223%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M130%20228%20Q155%20208%20178%20218%20Q155%20232%20130%20228%20Z%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%3Cellipse%20cx%3D%22154%22%20cy%3D%22224%22%20rx%3D%228%22%20ry%3D%225%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Cpath%20d%3D%22M130%20220%20Q155%20205%20178%20215%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%223.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M302%20222%20Q330%20208%20356%20222%20Q330%20234%20302%20222%20Z%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%3Cellipse%20cx%3D%22329%22%20cy%3D%22222%22%20rx%3D%227%22%20ry%3D%225%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Cpath%20d%3D%22M305%20218%20Q330%20205%20354%20218%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%223.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cline%20x1%3D%2240%22%20y1%3D%22110%22%20x2%3D%22440%22%20y2%3D%22110%22%20stroke%3D%22%232e2f2a%22%20stroke-width%3D%221%22/%3E%0A%20%20%3Cline%20x1%3D%2240%22%20y1%3D%22188%22%20x2%3D%22440%22%20y2%3D%22188%22%20stroke%3D%22%232e2f2a%22%20stroke-width%3D%221%22/%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3EHEAVY%20LIDS%20%3D%20ATTITUDE%3C/text%3E%0A%0A%3C/svg%3E",
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Ccircle%20cx%3D%22240%22%20cy%3D%2252%22%20r%3D%2216%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M224%2068%20L215%2085%20L195%2080%20L185%2095%20L200%20100%20L210%2090%20L218%20110%20L222%20145%20L240%20148%20L258%20145%20L262%20110%20L270%2090%20L280%20100%20L295%2095%20L285%2080%20L265%2085%20L256%2068%20Z%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linejoin%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M195%2080%20L180%2082%20L172%2090%20L168%20108%20L175%20112%20L182%20100%20L192%2098%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M285%2080%20L300%2082%20L308%2090%20L312%20108%20L305%20112%20L298%20100%20L288%2098%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M222%20145%20L215%20200%20L212%20250%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M258%20145%20L265%20200%20L268%20250%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M215%2095%20L225%2092%20L230%2095%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M250%2092%20L256%2095%20L262%2092%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M205%20105%20L210%20110%20M278%20105%20L273%20110%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M192%2082%20Q200%2088%20194%2096%22%20stroke%3D%22%233ecfff%22%20stroke-width%3D%221%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M288%2082%20Q280%2088%20286%2096%22%20stroke%3D%22%233ecfff%22%20stroke-width%3D%221%22%20fill%3D%22none%22/%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3ECLOTHING%20%3D%20BIOGRAPHY%3C/text%3E%0A%0A%3C/svg%3E",
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Cpath%20d%3D%22M140%20240%20Q155%20200%20170%20170%20Q185%20140%20200%20120%20Q215%20100%20230%2088%20Q242%2080%20248%2075%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%223.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M142%20238%20Q158%20198%20173%20168%20Q190%20136%20204%20118%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.3%22/%3E%0A%20%20%3Cpath%20d%3D%22M248%2075%20Q252%2068%20256%2072%20Q262%2060%20258%2055%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M230%2088%20Q215%2095%20205%2092%20Q195%2090%20188%20100%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M230%2088%20Q245%2098%20255%2095%20Q265%2093%20272%20105%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M200%20160%20Q185%20175%20175%20195%20Q168%20215%20172%20240%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M200%20160%20Q215%20172%20218%20195%20Q220%20218%20215%20242%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M290%2080%20Q305%20100%20320%20130%20Q330%20155%20325%20180%22%20stroke%3D%22%232e2f2a%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20stroke-dasharray%3D%222%204%22/%3E%0A%20%20%3Ctext%20x%3D%22310%22%20y%3D%2295%22%20font-family%3D%22monospace%22%20font-size%3D%229%22%20fill%3D%22%23e84040%22%3Eno%20undo%3C/text%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3ECOMMIT%20TO%20THE%20LINE%3C/text%3E%0A%0A%3C/svg%3E",
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Cpolygon%20points%3D%22240%2C30%20255%2C55%20240%2C52%20225%2C55%22%20fill%3D%22%23c8f135%22/%3E%0A%20%20%3Cpolygon%20points%3D%22220%2C58%20260%2C58%20270%2C120%20210%2C120%22%20fill%3D%22none%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Cpolygon%20points%3D%22210%2C120%20170%2C100%20155%2C130%20185%2C140%20195%2C148%22%20fill%3D%22none%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Cpolygon%20points%3D%22270%2C120%20310%2C100%20325%2C130%20295%2C140%20285%2C148%22%20fill%3D%22none%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Cpolygon%20points%3D%22218%2C122%20238%2C148%20228%2C200%20215%2C248%22%20fill%3D%22none%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Cpolygon%20points%3D%22262%2C122%20242%2C148%20252%2C200%20265%2C248%22%20fill%3D%22none%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Cpolygon%20points%3D%22155%2C130%20140%2C150%20158%2C155%20168%2C140%22%20fill%3D%22%23c8f135%22%20opacity%3D%220.4%22/%3E%0A%20%20%3Cpolygon%20points%3D%22325%2C130%20340%2C150%20322%2C155%20312%2C140%22%20fill%3D%22%23c8f135%22%20opacity%3D%220.4%22/%3E%0A%20%20%3Cline%20x1%3D%22220%22%20y1%3D%2275%22%20x2%3D%22260%22%20y2%3D%2275%22%20stroke%3D%22%23e84040%22%20stroke-width%3D%221.5%22/%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3ESHAPES%20HAVE%20ATTITUDE%3C/text%3E%0A%0A%3C/svg%3E",
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Cline%20x1%3D%22240%22%20y1%3D%2220%22%20x2%3D%22240%22%20y2%3D%22270%22%20stroke%3D%22%232e2f2a%22%20stroke-width%3D%221.5%22%20stroke-dasharray%3D%224%203%22/%3E%0A%20%20%3Ctext%20x%3D%22120%22%20y%3D%2238%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%229%22%20fill%3D%22%23c8f135%22%20letter-spacing%3D%221%22%3ESIMPLE%3C/text%3E%0A%20%20%3Ctext%20x%3D%22360%22%20y%3D%2238%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%229%22%20fill%3D%22%23c8f135%22%20letter-spacing%3D%221%22%3EDETAILED%3C/text%3E%0A%20%20%3Ccircle%20cx%3D%22120%22%20cy%3D%2275%22%20r%3D%2220%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%0A%20%20%3Cline%20x1%3D%22120%22%20y1%3D%2295%22%20x2%3D%22118%22%20y2%3D%22155%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22/%3E%0A%20%20%3Cline%20x1%3D%22118%22%20y1%3D%22115%22%20x2%3D%2295%22%20y2%3D%22130%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Cline%20x1%3D%22118%22%20y1%3D%22115%22%20x2%3D%22142%22%20y2%3D%22128%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Cline%20x1%3D%22115%22%20y1%3D%22155%22%20x2%3D%22105%22%20y2%3D%22210%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22/%3E%0A%20%20%3Cline%20x1%3D%22121%22%20y1%3D%22155%22%20x2%3D%22132%22%20y2%3D%22210%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22/%3E%0A%20%20%3Ccircle%20cx%3D%22360%22%20cy%3D%2260%22%20r%3D%2218%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M348%2058%20Q355%2048%20362%2056%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M365%2058%20Q372%2050%20376%2057%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M350%2068%20Q360%2074%20372%2068%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M355%2064%20Q358%2067%20362%2064%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M342%2078%20L338%2088%20L334%2082%20L330%2092%20M388%2078%20L382%2086%20L386%2090%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M342%2078%20L330%20100%20L322%20118%20M388%2078%20L400%2096%20L408%20116%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M330%20100%20L312%20108%20L305%20118%20M400%2096%20L418%20103%20L425%20115%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M340%20120%20L335%20160%20L330%20210%20M382%20118%20L386%20158%20L390%20210%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M328%20142%20L315%20148%20M388%20140%20L400%20146%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20fill%3D%22none%22/%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3ECONTRAST%20CREATES%20FOCUS%3C/text%3E%0A%0A%3C/svg%3E",
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Cellipse%20cx%3D%22240%22%20cy%3D%22110%22%20rx%3D%2272%22%20ry%3D%2285%22%20stroke%3D%22%232e2f2a%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20stroke-dasharray%3D%223%203%22/%3E%0A%20%20%3Cellipse%20cx%3D%22240%22%20cy%3D%2295%22%20rx%3D%2260%22%20ry%3D%2262%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%0A%20%20%3Cellipse%20cx%3D%22240%22%20cy%3D%2295%22%20rx%3D%2260%22%20ry%3D%2262%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M240%2033%20L240%20175%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20stroke-dasharray%3D%222%203%22%20opacity%3D%220.5%22/%3E%0A%20%20%3Cpath%20d%3D%22M180%2095%20L300%2095%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20stroke-dasharray%3D%222%203%22%20opacity%3D%220.5%22/%3E%0A%20%20%3Cpath%20d%3D%22M183%2068%20Q240%2058%20297%2068%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20opacity%3D%220.5%22/%3E%0A%20%20%3Cpath%20d%3D%22M220%2033%20Q205%2055%20200%2095%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20opacity%3D%220.4%22/%3E%0A%20%20%3Cpath%20d%3D%22M260%2033%20Q275%2055%20280%2095%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20opacity%3D%220.4%22/%3E%0A%20%20%3Cpath%20d%3D%22M210%2078%20Q225%2070%20240%2074%20Q255%2070%20270%2078%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M210%2080%20Q225%2090%20240%2086%20Q255%2090%20270%2080%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M215%20112%20Q228%20105%20240%20110%20Q252%20105%20265%20112%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M225%20140%20Q240%20150%20255%20140%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M218%20155%20Q240%20165%20262%20155%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Ctext%20x%3D%22165%22%20y%3D%2282%22%20font-family%3D%22monospace%22%20font-size%3D%228%22%20fill%3D%22%233ecfff%22%3Ebrow%3C/text%3E%0A%20%20%3Ctext%20x%3D%22165%22%20y%3D%22115%22%20font-family%3D%22monospace%22%20font-size%3D%228%22%20fill%3D%22%233ecfff%22%3Eeye%3C/text%3E%0A%20%20%3Ctext%20x%3D%22165%22%20y%3D%22145%22%20font-family%3D%22monospace%22%20font-size%3D%228%22%20fill%3D%22%233ecfff%22%3Enose%3C/text%3E%0A%20%20%3Ctext%20x%3D%22165%22%20y%3D%22162%22%20font-family%3D%22monospace%22%20font-size%3D%228%22%20fill%3D%22%233ecfff%22%3Emouth%3C/text%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3ESTRUCTURE%20BEFORE%20DETAIL%3C/text%3E%0A%0A%3C/svg%3E",
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%230e0f0c%22/%3E%0A%20%20%3Cpolygon%20points%3D%22240%2C20%20480%2C120%20480%2C300%200%2C300%200%2C120%22%20fill%3D%22%23141510%22%20opacity%3D%220.8%22/%3E%0A%20%20%3Ccircle%20cx%3D%22240%22%20cy%3D%2248%22%20r%3D%2219%22%20fill%3D%22%2322231f%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22/%3E%0A%20%20%3Cpolygon%20points%3D%22225%2C67%20220%2C80%20238%2C150%20242%2C150%20260%2C80%20255%2C67%22%20fill%3D%22%2322231f%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20stroke-linejoin%3D%22round%22/%3E%0A%20%20%3Cline%20x1%3D%22220%22%20y1%3D%2295%22%20x2%3D%22195%22%20y2%3D%22108%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Cline%20x1%3D%22258%22%20y1%3D%2292%22%20x2%3D%22285%22%20y2%3D%22104%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Cline%20x1%3D%22236%22%20y1%3D%22150%22%20x2%3D%22228%22%20y2%3D%22230%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Cline%20x1%3D%22244%22%20y1%3D%22150%22%20x2%3D%22252%22%20y2%3D%22230%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22/%3E%0A%20%20%3Cpolygon%20points%3D%220%2C260%20240%2C300%20480%2C260%20480%2C300%200%2C300%22%20fill%3D%22%23c8f135%22%20opacity%3D%220.04%22/%3E%0A%20%20%3Cpolygon%20points%3D%22100%2C300%20240%2C80%20380%2C300%22%20fill%3D%22none%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%220.5%22%20opacity%3D%220.15%22/%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22257%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%232e2f2a%22%20letter-spacing%3D%223%22%3ESHADOW%20IS%20SHAPE%3C/text%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3EMOOD%20REINFORCES%20CHARACTER%3C/text%3E%0A%0A%3C/svg%3E",
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Cpath%20d%3D%22M235%2040%20Q242%2035%20250%2038%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Ccircle%20cx%3D%22242%22%20cy%3D%2252%22%20r%3D%2215%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M242%2067%20Q238%2090%20230%20115%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M235%2088%20Q210%2075%20185%2080%20Q165%2084%20155%2095%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M155%2095%20Q148%20105%20152%20112%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M235%2088%20Q260%2095%20278%2088%20Q298%2080%20318%2088%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Ccircle%20cx%3D%22318%22%20cy%3D%2290%22%20r%3D%226%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22%23c8f135%22%20opacity%3D%220.3%22/%3E%0A%20%20%3Cpath%20d%3D%22M230%20115%20Q215%20145%20205%20175%20Q198%20200%20188%20235%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M230%20115%20Q248%20142%20260%20168%20Q268%20192%20278%20230%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M205%20175%20Q182%20168%20162%20172%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M260%20168%20Q285%20162%20305%20165%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M185%20236%20Q175%20245%20170%20255%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M280%20232%20Q292%20240%20298%20252%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M140%20240%20Q160%20200%20180%20160%20Q200%20120%20230%20100%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%220.5%22%20fill%3D%22none%22%20opacity%3D%220.2%22%20stroke-dasharray%3D%222%204%22/%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3EBODY%20COMMUNICATES%20FIRST%3C/text%3E%0A%0A%3C/svg%3E",
+  "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22480%22%20height%3D%22300%22%20viewBox%3D%220%200%20480%20300%22%3E%0A%20%20%3Crect%20width%3D%22480%22%20height%3D%22300%22%20fill%3D%22%231a1b17%22/%3E%0A%20%20%0A%20%20%3Ccircle%20cx%3D%22240%22%20cy%3D%2252%22%20r%3D%2216%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M240%2068%20L238%20130%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M238%2090%20Q215%2098%20200%2092%20Q188%2087%20182%2095%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M238%2090%20Q258%20100%20272%2094%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M235%20130%20L225%20220%20L222%20255%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M240%20130%20L252%20220%20L255%20255%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M272%2094%20L278%20140%20L282%20185%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Crect%20x%3D%22276%22%20y%3D%22148%22%20width%3D%2228%22%20height%3D%2260%22%20rx%3D%224%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%0A%20%20%3Cline%20x1%3D%22280%22%20y1%3D%22165%22%20x2%3D%22300%22%20y2%3D%22165%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22/%3E%0A%20%20%3Cline%20x1%3D%22280%22%20y1%3D%22175%22%20x2%3D%22300%22%20y2%3D%22175%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22/%3E%0A%20%20%3Cline%20x1%3D%22280%22%20y1%3D%22185%22%20x2%3D%22300%22%20y2%3D%22185%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221%22/%3E%0A%20%20%3Cellipse%20cx%3D%22290%22%20cy%3D%22208%22%20rx%3D%2214%22%20ry%3D%2210%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M230%2052%20Q228%2048%20226%2050%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%0A%20%20%3Cpath%20d%3D%22M182%2095%20Q175%20102%20178%20110%22%20stroke%3D%22%23c8f135%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Ctext%20x%3D%22240%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22monospace%22%20font-size%3D%2210%22%20fill%3D%22%237a7a6e%22%20letter-spacing%3D%223%22%3EINSTRUMENT%20%3D%20IDENTITY%3C/text%3E%0A%0A%3C/svg%3E"
+];
+// Images — inline SVG, no external dependencies, works offline and locally
+const IMAGES=[
+  {src:IMG_SRCS[0],title:"Energy & gesture",desc:"Start with the spine. The energy line is the foundation of every good figure. Everything else is detail.",tags:["gesture","pose"],principle:0},
+  {src:IMG_SRCS[1],title:"Attitude in stance",desc:"Hip tilt + shoulder angle + head tilt = an opinion. Neutral kills the drawing.",tags:["pose","character"],principle:1},
+  {src:IMG_SRCS[2],title:"Strong silhouette",desc:"Fill it black. Does it still work? If yes, the design is solid.",tags:["silhouette","character"],principle:2},
+  {src:IMG_SRCS[3],title:"Expressive eyes",desc:"Half-lidded, asymmetric, heavy-browed. Eyes carry the whole personality.",tags:["face","expressions"],principle:4},
+  {src:IMG_SRCS[4],title:"Clothing as identity",desc:"The jacket tells you who they are before you see their face.",tags:["clothing","character"],principle:8},
+  {src:IMG_SRCS[5],title:"Ink confidence",desc:"Commit to the line. The wobble is not a mistake — it is the character.",tags:["ink","linework"],principle:6},
+  {src:IMG_SRCS[6],title:"Abstract punk shapes",desc:"Study the shapes: angular, spiky, asymmetric. Design is attitude.",tags:["silhouette","character"],principle:2},
+  {src:IMG_SRCS[7],title:"Contrast: detail vs. rest",desc:"The busy area pops because the quiet area gives it room to breathe.",tags:["linework","character"],principle:9},
+  {src:IMG_SRCS[8],title:"Face structure study",desc:"Cheekbones, jaw angle, brow ridge — architecture before expression.",tags:["face","expressions"],principle:4},
+  {src:IMG_SRCS[9],title:"Mood & atmosphere",desc:"Even the background mood should reinforce the character's attitude.",tags:["character","pose"],principle:10},
+  {src:IMG_SRCS[10],title:"Performance energy",desc:"Live performance = pure gesture. Watch how the body communicates before the face does.",tags:["gesture","pose"],principle:0},
+  {src:IMG_SRCS[11],title:"Musician archetype",desc:"The way they hold their instrument tells you everything about their character.",tags:["character","clothing"],principle:10}
+];
+
+const ALL_TAGS=["all","gesture","pose","face","expressions","silhouette","character","clothing","ink","linework"];
+
+const PRINCIPLES=[
+  {title:"Draw movement first",short:"Start every character with a gesture or energy line.",why:"Structure without gesture creates stiff, dead figures. The energy line IS the character.",mistakes:"Jumping straight to head construction before establishing the spine curve.",task:"Draw 10 single-line gestures in 5 minutes. No detail. Pure energy.",imgIdx:0},
+  {title:"Exaggerate the attitude",short:"Characters should rarely stand neutral.",why:"Neutral is forgettable. Hip tilt, forward shoulders, swagger — these tell stories instantly.",mistakes:"Drawing characters straight on, weight evenly distributed, expression blank.",task:"Take a neutral pose sketch and push every angle 30% further.",imgIdx:1},
+  {title:"The silhouette must read",short:"Recognizable from silhouette alone.",why:"If you fill the character in black and lose the personality, the design has failed.",mistakes:"Relying on details to carry character instead of the underlying shape.",task:"Draw 5 characters as solid black shapes. No interior lines allowed.",imgIdx:2},
+  {title:"Long and lean proportions",short:"Favor elongated bodies and stylized anatomy.",why:"Realism creates average. Elongation creates distinctive personality.",mistakes:"Drawing heads too large relative to the body, or proportions too grounded.",task:"Redraw a figure with the torso 20% longer and limbs stretched to 8 heads tall.",imgIdx:1},
+  {title:"Narrow eyes create attitude",short:"Half-lidded eyes, asymmetry, and heavy lids build personality.",why:"Wide open eyes read as innocent or surprised. Heavy lids carry experience, contempt, and cool.",mistakes:"Drawing full circles for irises. Symmetrical eyes that read as cartoonish.",task:"Draw 20 eye pairs varying lid weight, angle, and asymmetry.",imgIdx:3},
+  {title:"Teeth matter",short:"Mouths and visible teeth carry a lot of character.",why:"A closed mouth hides personality. Stylized teeth convey wildness, menace, and humour.",mistakes:"Avoiding teeth entirely. Drawing teeth as a white rectangle.",task:"Draw 10 different mouth styles: grins, sneers, crooked smiles, open mouths.",imgIdx:8},
+  {title:"Keep linework messy and alive",short:"Lines should feel energetic, imperfect, layered.",why:"Over-polished lines kill the life in a drawing. Controlled mess is more dynamic.",mistakes:"Erasing and redrawing until the line is 'perfect'. Using rulers for organic forms.",task:"Draw a character without lifting the pen. Then draw it again even faster.",imgIdx:5},
+  {title:"Hands are expressive",short:"Hands should help communicate character and attitude.",why:"Limp or hidden hands lose 30% of the character's communicative power.",mistakes:"Drawing fists by default. Hiding hands in pockets on every character.",task:"Draw 10 hand gestures: pointing, gripping, loose dangling, splayed tension.",imgIdx:10},
+  {title:"Clothing builds identity",short:"Outfit and accessories reveal who the character is.",why:"Clothing is visual shorthand for biography, subculture, class, and personality.",mistakes:"Generic clothes on every character. Not using silhouette-shaping garments.",task:"Design 3 characters you can identify by clothes alone, without faces.",imgIdx:4},
+  {title:"Contrast simple and detailed",short:"Simple body, detailed face — or vice versa.",why:"Complexity without contrast creates visual noise. The eye needs rest to appreciate detail.",mistakes:"Making every part equally detailed. Every element competing for attention.",task:"Draw a character where 70% is flat shapes and 30% is densely detailed.",imgIdx:7},
+  {title:"Design characters, not humans",short:"Every figure should imply a backstory and point of view.",why:"Generic humans are boring. Attitude, history, and weirdness make memorable characters.",mistakes:"Drawing 'a person standing' instead of 'a specific, particular someone'.",task:"Write 3 sentences about a character's life before drawing them.",imgIdx:11},
+  {title:"Draw fast to preserve energy",short:"Over-polishing kills attitude. Prioritize life over perfection.",why:"Speed bypasses your self-editing brain and accesses raw instinct and energy.",mistakes:"Spending 2 hours on a single 'perfect' drawing instead of 20 rough ones.",task:"Set a 2-minute limit per drawing. Complete 10 characters in 20 minutes.",imgIdx:10}
+];
+
+const PHASES=[
+  {days:[1,2,3],label:"GESTURE FOUNDATIONS",desc:"30-second gesture drawings. 20 figures per session. Energy, not detail.",cat:"gesture",mins:15},
+  {days:[4,5,6],label:"ATTITUDE POSES",desc:"10 characters per session. Hip tilt, shoulders, weight, and stance.",cat:"pose",mins:20},
+  {days:[7,8,9],label:"CHARACTER FACES",desc:"Draw 20 faces on one page. Cheekbones, eyelids, grin shapes, asymmetry.",cat:"face",mins:20},
+  {days:[10,11,12],label:"EYES & EXPRESSION",desc:"20 eye variations. Attitude and expression. Heavy lids, asymmetry.",cat:"face",mins:20},
+  {days:[13,14,15],label:"MOUTHS & TEETH",desc:"Grins, crooked smiles, open mouths. Stylized teeth and mouth character.",cat:"face",mins:20},
+  {days:[16,17,18],label:"SILHOUETTE DESIGN",desc:"Create characters as black shapes first. Details come after.",cat:"silhouette",mins:25},
+  {days:[19,20,21],label:"PUNK CHARACTER CREATION",desc:"Design 10 characters — biker, DJ, mutant, mechanic, antihero.",cat:"character",mins:45},
+  {days:[22,23,24],label:"INK MODE",desc:"No eraser, no undo. Bold confident linework only.",cat:"ink",mins:30},
+  {days:[25,26,27],label:"CHARACTER SHEET",desc:"Front view, side view, action pose, facial expressions.",cat:"sheet",mins:45},
+  {days:[28,29,30],label:"BAND CHARACTER FINAL",desc:"Define role, instrument, attitude, clothing, silhouette. Final concept.",cat:"final",mins:45}
+];
+
+const ACHIEVEMENTS=[
+  {icon:"✏️",title:"FIRST SKETCH",desc:"Completed your first exercise",unlocked:true},
+  {icon:"🔥",title:"3-DAY STREAK",desc:"Drew 3 days in a row",unlocked:true},
+  {icon:"⚡",title:"7-DAY STREAK",desc:"A full week of practice",unlocked:true},
+  {icon:"👁️",title:"FACE GRINDER",desc:"Completed 20 face exercises",unlocked:false},
+  {icon:"🖋️",title:"INK SURVIVOR",desc:"Finished ink mode without undoing",unlocked:false},
+  {icon:"💀",title:"SILHOUETTE KING",desc:"5 solid silhouette sessions",unlocked:false},
+  {icon:"🎸",title:"CHARACTER ARCHITECT",desc:"Built 5 character cards in studio",unlocked:false},
+  {icon:"🏆",title:"30-DAY FINISHER",desc:"Completed the full program",unlocked:false}
+];
+
+const QUOTES=["Start loose. Energy before accuracy.","Push the attitude. Neutral is boring.","Let the line wobble. Life beats polish.","Teeth can carry more character than eyes.","Draw the silhouette first. Personality starts in shape.","Fast drawing bypasses your inner critic.","A stiff pose is a dead character.","Exaggerate until it feels wrong — then go further.","Clothing is biography made visible.","The energy line IS the character."];
+const FACE_PROMPTS=[
+  {title:"ARROGANT GRIN",desc:"Upper lip curled asymmetrically. One eyebrow raised. Heavy upper eyelid. Chin slightly forward. Teeth just showing on one side.",eyes:"Half-lidded, asymmetric",jaw:"Sharp, angular",mouth:"Crooked smirk",energy:"Cocky, dominant"},
+  {title:"TIRED CONTEMPT",desc:"Heavy drooping eyelids. Flat mouth, corners down slightly. Cheekbones pronounced. Looks right through you.",eyes:"Deeply hooded",jaw:"Relaxed, gaunt",mouth:"Downturned line",energy:"Dismissive, exhausted"},
+  {title:"MANIC ENERGY",desc:"Eyes wide but upper lids still sharp. Teeth fully visible in a tense grin. Eyebrows asymmetric. Tension in the neck.",eyes:"Wide, electric",jaw:"Clenched, tense",mouth:"Strained wide grin",energy:"Unstable, intense"},
+  {title:"COLD STARE",desc:"Almost no expression. Eyelids at mid position. Mouth flat and closed. The stillness IS the expression.",eyes:"Mid-lid, symmetrical",jaw:"Hard, defined",mouth:"Closed flat line",energy:"Controlled menace"},
+  {title:"BITTER SMIRK",desc:"One side of mouth pulls up. Eye on that side narrows. Brow on opposite side subtly raised.",eyes:"Uneven, knowing",jaw:"Strong, slightly tilted",mouth:"One-sided lift",energy:"Sardonic, sharp"},
+  {title:"SHARP CONTEMPT",desc:"Upper lip raised slightly. Eyes looking downward under heavy brows. Head tilted back slightly.",eyes:"Hooded, looking down",jaw:"Raised, proud",mouth:"Slight snarl",energy:"Superior, disdainful"}
+];
+const POSE_PROMPTS=["Slouched figure, hands in pockets, weight on one leg. Feel the gravity.","Leaning against a wall, arms crossed, staring sideways. Barely interested.","Mid-stride, one shoulder forward, head slightly down. Going somewhere fast.","Crouching tension — coiled, ready, hands loose. About to move.","Standing tall with a slight backward lean. Arms away from body. Owns the space.","Sitting on the ground, knees up, arms resting on knees. Watching. Waiting.","One hand pointing, body leaning into the gesture. The finger does the talking.","Turning to look over the shoulder. The body is still, the head is sharp."];
+const RANDOM_CHARS=[
+  {name:"ZERO",arch:"Antihero",pose:"Slouched swagger",clothes:"Military surplus coat, torn shirt, unlaced boots",expr:"Tired contempt",notes:"Former session musician who burned every bridge. Still plays better than anyone in the room."},
+  {name:"RYN",arch:"Streetwise Musician",pose:"Arms crossed, weight shifted",clothes:"Sleeveless denim vest covered in patches, tight jeans, platforms",expr:"Cold stare",notes:"Bassist. Never smiles on stage. Crowds love her for it."},
+  {name:"BLAZE",arch:"Underground DJ",pose:"Mid-motion stride",clothes:"Oversized tracksuit, chain necklace, wraparound shades",expr:"Sharp grin",notes:"Hasn't slept in two days. This is his natural state."},
+  {name:"MOTH",arch:"Punk Witch",pose:"Looking over shoulder",clothes:"Long tattered coat, rings on every finger, heavy boots",expr:"Bitter smirk",notes:"Everyone thinks she's from somewhere else. She lets them think that."},
+  {name:"DRIX",arch:"Rogue Mechanic",pose:"Leaning against wall",clothes:"Oil-stained overalls, one strap hanging, fingerless gloves",expr:"Manic energy",notes:"Fixes things nobody else can. Breaks things nobody else would dare."}
+];
+
+// STATE
+let timerInterval=null,timerSec=30,timerPreset=30,timerRunning=false,roundNum=1,totalRounds=10;
+const completedDays=new Set([1,2,3,4,5,6,7]);
+const completedPrinciples=new Set([0,1,2]);
+let currentFilter='all';
+
+// NAV
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+id)?.classList.add('active');
+  document.getElementById('nav-'+id)?.classList.add('active');
+  if(id==='principles'&&!document.getElementById('principles-list').children.length)renderPrinciples();
+  if(id==='train'&&!document.getElementById('day-phases').children.length)renderDays();
+  if(id==='progress'&&!document.getElementById('achievements-list').children.length)renderAchievements();
+  if(id==='inspo')renderInspoGrid(currentFilter);
+  if(id==='facelab'&&!document.getElementById('face-ref-grid').children.length)renderTagGrid('face-ref-grid',['face','expressions']);
+  if(id==='studio'&&!document.getElementById('char-ref-grid').children.length)renderTagGrid('char-ref-grid',['character','clothing','silhouette']);
+  if(id==='home')renderHomeInspo();
+}
+
+// IMAGE UTILS
+// Build image element using DOM API (avoids all quote-escaping issues in innerHTML)
+function makeImg(src, alt, cls, extraStyle) {
+  var img = document.createElement('img');
+  img.src = src;
+  img.alt = alt || '';
+  img.loading = 'lazy';
+  if (cls) img.className = cls;
+  if (extraStyle) img.style.cssText = extraStyle;
+  img.onerror = function() {
+    this.onerror = null;
+    // Draw a simple SVG placeholder via canvas-free data URI
+    var label = (alt || 'REF').substring(0, 16).toUpperCase();
+    var s = '<svg xmlns="http://www.w3.org/2000/svg" width="480" height="360">'
+      + '<rect width="480" height="360" fill="#22231f"/>'
+      + '<rect x="16" y="16" width="448" height="328" rx="8" fill="none" stroke="#2e2f2a" stroke-width="1"/>'
+      + '<path d="M210 160 L240 120 L270 160 M240 120 L240 210" stroke="#c8f135" stroke-width="2" fill="none" stroke-linecap="round"/>'
+      + '<path d="M185 210 Q240 185 295 210" stroke="#c8f135" stroke-width="1.5" fill="none" stroke-linecap="round"/>'
+      + '<circle cx="240" cy="110" r="10" stroke="#c8f135" stroke-width="1.5" fill="none"/>'
+      + '<text x="240" y="250" text-anchor="middle" font-family="monospace" font-size="11" fill="#7a7a6e" letter-spacing="2">' + label + '</text>'
+      + '</svg>';
+    this.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s);
+  };
+  return img;
+}
+
+// Returns an img element's outerHTML after building it via DOM (safe from escaping bugs)
+function fi(src, _unused, alt, cls, extraStyle) {
+  return makeImg(src, alt, cls, extraStyle).outerHTML
+    .replace(' onerror=""', ''); // clean up empty attr if any
+}
+
+// For cases where we need to attach the onerror properly, use makeImg and appendChild
+function appendImg(container, src, alt, cls, extraStyle) {
+  container.appendChild(makeImg(src, alt, cls, extraStyle));
+}
+
+function openLightbox(idx) {
+  var im = IMAGES[idx];
+  var overlay = document.createElement('div');
+  overlay.className = 'lightbox';
+
+  var inner = document.createElement('div');
+  inner.className = 'lightbox-inner';
+
+  var img = makeImg(im.src, im.title, '', 'width:100%;max-height:55vh;object-fit:contain;background:#22231f;display:block');
+  inner.appendChild(img);
+
+  var closeBtn = document.createElement('button');
+  closeBtn.className = 'lightbox-close';
+  closeBtn.textContent = '✕';
+  closeBtn.onclick = function() { overlay.remove(); };
+  inner.appendChild(closeBtn);
+
+  var body = document.createElement('div');
+  body.className = 'lightbox-body';
+  body.innerHTML = '<div class="lightbox-title">' + im.title + '</div>'
+    + '<div class="lightbox-desc">' + im.desc + '</div>'
+    + '<div style="display:flex;flex-wrap:wrap;gap:6px">'
+    + (im.tags || []).map(function(t) { return '<span class="tag tag-green">' + t + '</span>'; }).join('')
+    + '</div>';
+  inner.appendChild(body);
+
+  overlay.appendChild(inner);
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+// HOME INSPO — built via DOM to avoid escaping issues
+function renderHomeInspo() {
+  var el = document.getElementById('home-inspo-scroll');
+  if (!el || el.children.length) return;
+  IMAGES.slice(0, 6).forEach(function(im) {
+    var card = document.createElement('div');
+    card.className = 'inspo-card';
+    card.onclick = function() { goTo('inspo'); };
+    var img = makeImg(im.src, im.title, '', 'width:100%;height:150px;object-fit:cover;display:block;background:#22231f');
+    card.appendChild(img);
+    var label = document.createElement('div');
+    label.className = 'inspo-card-label';
+    label.innerHTML = '<div class="inspo-card-title">' + im.title + '</div>'
+      + '<div class="inspo-card-sub">' + (im.tags || []).join(' · ') + '</div>';
+    card.appendChild(label);
+    el.appendChild(card);
+  });
+}
+
+// INSPO GRID
+function renderInspoGrid(filter) {
+  var fEl = document.getElementById('inspo-filters');
+  fEl.innerHTML = ALL_TAGS.map(function(t) {
+    return '<button class="filter-btn ' + (filter === t ? 'active' : '') + '" onclick="filterInspo(\'' + t + '\')">' + t.toUpperCase() + '</button>';
+  }).join('');
+  var filtered = filter === 'all' ? IMAGES : IMAGES.filter(function(im) { return (im.tags || []).includes(filter); });
+  var grid = document.getElementById('inspo-grid');
+  grid.innerHTML = '';
+  filtered.forEach(function(im) {
+    var idx = IMAGES.indexOf(im);
+    var cell = document.createElement('div');
+    cell.className = 'img-cell';
+    cell.onclick = function() { openLightbox(idx); };
+    var img = makeImg(im.src, im.title, '', 'width:100%;height:130px;object-fit:cover;display:block');
+    cell.appendChild(img);
+    var lbl = document.createElement('div');
+    lbl.className = 'img-cell-label';
+    lbl.textContent = im.title;
+    cell.appendChild(lbl);
+    grid.appendChild(cell);
+  });
+}
+function filterInspo(tag) { currentFilter = tag; renderInspoGrid(tag); }
+
+// TAGGED GRID
+function renderTagGrid(elId, tags) {
+  var el = document.getElementById(elId);
+  if (!el) return;
+  var imgs = IMAGES.filter(function(im) { return (im.tags || []).some(function(t) { return tags.includes(t); }); });
+  var pool = imgs.length ? imgs : IMAGES.slice(0, 4);
+  el.innerHTML = '';
+  pool.forEach(function(im) {
+    var idx = IMAGES.indexOf(im);
+    var cell = document.createElement('div');
+    cell.className = 'img-cell';
+    cell.onclick = function() { openLightbox(idx); };
+    var img = makeImg(im.src, im.title, '', 'width:100%;height:130px;object-fit:cover;display:block');
+    cell.appendChild(img);
+    var lbl = document.createElement('div');
+    lbl.className = 'img-cell-label';
+    lbl.textContent = im.title;
+    cell.appendChild(lbl);
+    el.appendChild(cell);
+  });
+}
+
+// PRINCIPLES
+function renderPrinciples() {
+  var el = document.getElementById('principles-list');
+  el.innerHTML = PRINCIPLES.map(function(p, i) {
+    var done = completedPrinciples.has(i);
+    return '<div class="principle-card ' + (done ? 'done' : '') + '" onclick="togglePrinciple(' + i + ')">'
+      + '<div class="principle-num">' + String(i+1).padStart(2,'0') + '</div>'
+      + '<div class="principle-title">' + p.title.toUpperCase() + '</div>'
+      + '<div class="principle-body">' + p.short + '</div>'
+      + '<div class="principle-detail" id="pd-' + i + '">'
+      + '<div class="img-placeholder" data-idx="' + (p.imgIdx !== undefined ? p.imgIdx : i % IMAGES.length) + '" data-alt="' + p.title + '" style="margin-bottom:10px"></div>'
+      + '<div class="detail-label">Why it matters</div><div class="detail-text">' + p.why + '</div>'
+      + '<div class="detail-label">Common mistakes</div><div class="detail-text">' + p.mistakes + '</div>'
+      + '<div class="detail-label">Mini exercise</div><div class="detail-text">' + p.task + '</div>'
+      + '<button class="btn ' + (done ? 'btn-outline' : 'btn-primary') + '" onclick="markPrinciple(event,' + i + ')" style="margin-top:8px;width:100%">' + (done ? '✓ DONE' : 'MARK COMPLETE') + '</button>'
+      + '</div></div>';
+  }).join('');
+  // Inject images via DOM after innerHTML is set
+  document.querySelectorAll('.img-placeholder').forEach(function(ph) {
+    var idx = parseInt(ph.dataset.idx);
+    var im = IMAGES[idx] || IMAGES[0];
+    var img = makeImg(im.src, ph.dataset.alt, 'principle-img', '');
+    ph.parentNode.replaceChild(img, ph);
+  });
+}
+function togglePrinciple(i){document.getElementById('pd-'+i).classList.toggle('open');}
+function markPrinciple(e,i){e.stopPropagation();completedPrinciples.add(i);renderPrinciples();}
+
+// DAYS
+function renderDays(){
+  document.getElementById('day-phases').innerHTML=PHASES.map(ph=>`
+    <div style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div><h3 style="margin-bottom:2px">${ph.cat.toUpperCase()} PHASE</h3><div style="font-family:var(--font-mono);font-size:13px;color:var(--text)">${ph.label}</div></div>
+        <span class="tag tag-yellow">${ph.mins} MIN</span>
+      </div>
+      <div class="card card-accent" style="padding:12px">
+        <p style="margin-bottom:10px">${ph.desc}</p>
+        <div class="day-grid">${ph.days.map(d=>`<div class="day-cell ${completedDays.has(d)?'done':d===8?'today':d>8?'locked':''}" onclick="openDay(${d})">${d}</div>`).join('')}</div>
+      </div>
+    </div>`).join('');
+}
+
+function openDay(d) {
+  var phase = PHASES.find(function(p) { return p.days.includes(d); });
+  if (!phase) return;
+  var im = IMAGES[d % IMAGES.length];
+  var popup = document.createElement('div');
+  popup.style.cssText = 'position:fixed;inset:0;background:#000a;z-index:200;display:flex;align-items:flex-end;';
+  var sheet = document.createElement('div');
+  sheet.style.cssText = 'background:var(--bg2);border:1px solid var(--border);border-radius:16px 16px 0 0;padding:20px;width:100%;max-width:480px;margin:0 auto;max-height:82vh;overflow-y:auto';
+  sheet.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">'
+    + '<div><h3 style="margin-bottom:2px">DAY ' + d + '</h3>'
+    + '<div style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--text)">' + phase.label + '</div></div>'
+    + '<button onclick="this.closest(\'[style*=fixed]\').remove()" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer">✕</button>'
+    + '</div>'
+    + '<div id="day-img-slot-' + d + '" style="margin-bottom:14px"></div>'
+    + '<div class="moto-card"><div class="moto-text">' + QUOTES[d % QUOTES.length] + '</div></div>'
+    + '<h3 style="margin-bottom:8px">EXERCISE</h3>'
+    + '<div class="exercise-step"><div class="step-num">1</div><div class="step-text">Warm up with 5 fast loose gestures. No detail. Pure line.</div></div>'
+    + '<div class="exercise-step"><div class="step-num">2</div><div class="step-text">' + phase.desc + '</div></div>'
+    + '<div class="exercise-step"><div class="step-num">3</div><div class="step-text">Review your work. Pick your best result. Note what surprised you.</div></div>'
+    + '<h3 style="margin:16px 0 8px">SELF-RATING</h3>'
+    + '<div class="rating-row">' + ['Energy','Attitude','Anatomy'].map(function(r) {
+        return '<div class="rating-item"><span class="rating-label">' + r + '</span><input class="rating-slider" type="range" min="1" max="10" value="5" oninput="this.nextElementSibling.textContent=this.value"><span class="rating-val">5</span></div>';
+      }).join('') + '</div>'
+    + '<button class="btn ' + (completedDays.has(d) ? 'btn-outline' : 'btn-primary') + '" onclick="completeDay(' + d + ',this)" style="width:100%;margin-top:16px">' + (completedDays.has(d) ? '✓ COMPLETED' : 'MARK COMPLETE') + '</button>';
+  popup.appendChild(sheet);
+  popup.addEventListener('click', function(e) { if (e.target === popup) popup.remove(); });
+  document.body.appendChild(popup);
+  // Inject image via DOM after appending
+  var slot = document.getElementById('day-img-slot-' + d);
+  if (slot) {
+    var img = makeImg(im.src, phase.label, '', 'width:100%;height:160px;object-fit:cover;border-radius:8px;border:1px solid #2e2f2a');
+    slot.appendChild(img);
+  }
+}
+function completeDay(d,btn){completedDays.add(d);btn.textContent='✓ COMPLETED';btn.classList.replace('btn-primary','btn-outline');btn.closest('[style*=fixed]').remove();renderDays();}
+
+// ACHIEVEMENTS
+function renderAchievements(){
+  document.getElementById('achievements-list').innerHTML=ACHIEVEMENTS.map(a=>`
+    <div class="ach-card"><div class="ach-icon ${a.unlocked?'unlocked':'locked'}">${a.icon}</div>
+    <div><div class="ach-title">${a.title}</div><div class="ach-desc">${a.desc}</div></div>
+    ${a.unlocked?'<span class="tag tag-green" style="margin-left:auto">EARNED</span>':''}</div>`).join('');
+}
+
+// TIMER
+function setPreset(s,btn){timerPreset=s;timerSec=s;timerRunning=false;clearInterval(timerInterval);document.getElementById('timer-btn').textContent='START';document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateTimerDisplay();}
+function updateTimerDisplay(){const m=Math.floor(timerSec/60),s=timerSec%60;const el=document.getElementById('timer-disp');el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');el.className='timer-display'+(timerSec<=5?' warning':'');document.getElementById('timer-prog').style.width=(timerSec/timerPreset*100)+'%';}
+function toggleTimer(){if(timerRunning){clearInterval(timerInterval);timerRunning=false;document.getElementById('timer-btn').textContent='RESUME';}else{timerRunning=true;document.getElementById('timer-btn').textContent='PAUSE';timerInterval=setInterval(()=>{timerSec--;updateTimerDisplay();if(timerSec<=0){clearInterval(timerInterval);timerRunning=false;if(roundNum<totalRounds){roundNum++;document.getElementById('round-num').textContent=roundNum;timerSec=timerPreset;updateTimerDisplay();newPosePrompt();document.getElementById('timer-btn').textContent='START';}else{document.getElementById('timer-btn').textContent='DONE ✓';}}},1000);}}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerSec=timerPreset;roundNum=1;document.getElementById('round-num').textContent=1;document.getElementById('timer-btn').textContent='START';updateTimerDisplay();}
+function skipRound(){clearInterval(timerInterval);timerRunning=false;if(roundNum<totalRounds){roundNum++;document.getElementById('round-num').textContent=roundNum;timerSec=timerPreset;updateTimerDisplay();newPosePrompt();document.getElementById('timer-btn').textContent='START';}}
+function setRounds(v){totalRounds=parseInt(v);document.getElementById('round-total').textContent=v;document.getElementById('round-display').textContent=v;}
+function newPosePrompt(){document.getElementById('pose-prompt').textContent=POSE_PROMPTS[Math.floor(Math.random()*POSE_PROMPTS.length)];}
+
+// FACE LAB
+function randomizeFace(){const f=FACE_PROMPTS[Math.floor(Math.random()*FACE_PROMPTS.length)];document.getElementById('face-prompt-title').textContent=f.title;document.getElementById('face-prompt-desc').textContent=f.desc;document.getElementById('ft-eyes').textContent=f.eyes;document.getElementById('ft-jaw').textContent=f.jaw;document.getElementById('ft-mouth').textContent=f.mouth;document.getElementById('ft-energy').textContent=f.energy;}
+
+// STUDIO
+function buildCharacter(){const name=document.getElementById('char-name').value||'UNNAMED';const arch=document.getElementById('char-arch').value||'Unknown';const pose=document.getElementById('char-pose').value||'—';const clothes=document.getElementById('char-clothes').value||'—';const expr=document.getElementById('char-expr').value||'—';const notes=document.getElementById('char-notes').value||'—';document.getElementById('char-card-output').innerHTML=`<div class="character-card"><span class="tag tag-green" style="margin-bottom:8px">CHARACTER CONCEPT</span><h2>${name.toUpperCase()}</h2><p style="margin-bottom:12px;font-family:var(--font-mono);font-size:12px;color:var(--muted)">${arch.toUpperCase()}</p><hr style="border:none;border-top:1px solid var(--border);margin-bottom:12px"><div style="display:grid;gap:8px"><div><div class="detail-label">Pose</div><div class="detail-text">${pose}</div></div><div><div class="detail-label">Clothing</div><div class="detail-text">${clothes}</div></div><div><div class="detail-label">Expression</div><div class="detail-text">${expr}</div></div><div><div class="detail-label">Backstory</div><div class="detail-text">${notes}</div></div></div><div class="moto-card" style="margin-top:14px"><div class="moto-text" style="font-size:11px">Draw a long-limbed ${arch.toLowerCase()} with ${expr.toLowerCase()} eyes, ${pose.toLowerCase()} stance, and ${clothes.toLowerCase()}.</div></div></div>`;}
+function randomChar(){const c=RANDOM_CHARS[Math.floor(Math.random()*RANDOM_CHARS.length)];document.getElementById('char-name').value=c.name;document.getElementById('char-arch').value=c.arch;document.getElementById('char-pose').value=c.pose;document.getElementById('char-clothes').value=c.clothes;document.getElementById('char-expr').value=c.expr;document.getElementById('char-notes').value=c.notes;}
+
+// INIT
+document.getElementById('daily-quote').textContent='"'+QUOTES[new Date().getDay()%QUOTES.length]+'"';
+updateTimerDisplay();
+renderHomeInspo();
+</script>
+</body>
+</html>
