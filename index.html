@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sketch Attitude — Learn Expressive Character Drawing</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#111210;
+  --bg2:#191a17;
+  --bg3:#22231f;
+  --card:#1d1e1a;
+  --border:#2e2f2a;
+  --text:#e8e6dc;
+  --muted:#7a7a6e;
+  --accent:#c8f135;
+  --accent2:#e84040;
+  --accent3:#3ecfff;
+  --accent4:#f5c842;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-mono:'Space Mono',monospace;
+  --font-body:'Nunito',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:100;padding:0 0 env(safe-area-inset-bottom)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px 8px;background:none;border:none;color:var(--muted);font-family:var(--font-mono);font-size:9px;cursor:pointer;transition:color .2s;letter-spacing:.5px}
+.nav-btn.active{color:var(--accent)}
+.nav-btn svg{width:20px;height:20px}
+
+.screen{display:none;padding:16px 16px 90px;max-width:480px;margin:0 auto;animation:fadeIn .25s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+h1{font-family:var(--font-display);font-size:52px;line-height:.95;letter-spacing:1px;color:var(--text)}
+h2{font-family:var(--font-display);font-size:34px;letter-spacing:.5px;color:var(--text)}
+h3{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+p{font-size:14px;line-height:1.6;color:var(--muted)}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
+.card-accent{border-left:3px solid var(--accent)}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:1px;font-weight:700}
+.tag-green{background:#c8f13520;color:var(--accent);border:1px solid #c8f13540}
+.tag-red{background:#e8404020;color:var(--accent2);border:1px solid #e8404040}
+.tag-blue{background:#3ecfff20;color:var(--accent3);border:1px solid #3ecfff40}
+.tag-yellow{background:#f5c84220;color:var(--accent4);border:1px solid #f5c84240}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:8px;font-family:var(--font-mono);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .15s;border:none}
+.btn-primary{background:var(--accent);color:#111;text-transform:uppercase}
+.btn-primary:hover{background:#d4ff45;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border);text-transform:uppercase}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+
+.progress-bar{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .5s ease}
+
+.hero{padding:40px 0 24px}
+.hero-eyebrow{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+.hero-title{font-family:var(--font-display);font-size:68px;line-height:.9;letter-spacing:1px;margin-bottom:16px}
+.hero-title span{color:var(--accent)}
+.hero-sub{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+.divider{border:none;height:1px;background:linear-gradient(90deg,var(--accent)20%,transparent);margin:20px 0;opacity:.4}
+
+.sketch-placeholder{background:var(--bg3);border:1px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;min-height:200px}
+
+.principle-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s}
+.principle-card:hover{border-color:var(--accent)}
+.principle-card.done{border-left:3px solid var(--accent);opacity:.7}
+.principle-num{font-family:var(--font-display);font-size:42px;color:var(--bg3);line-height:1;float:right;margin-left:8px}
+.principle-title{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.principle-body{font-size:13px;color:var(--muted);line-height:1.5}
+.principle-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.principle-detail.open{display:block}
+.detail-row{margin-bottom:10px}
+.detail-label{font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px}
+.detail-text{font-size:13px;color:var(--muted);line-height:1.5}
+
+.day-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:16px}
+.day-cell{aspect-ratio:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;color:var(--muted)}
+.day-cell.done{background:#c8f13520;border-color:var(--accent);color:var(--accent)}
+.day-cell.today{background:var(--accent);color:#111;border-color:var(--accent)}
+.day-cell.locked{opacity:.3;cursor:default}
+
+.timer-display{font-family:var(--font-display);font-size:96px;letter-spacing:2px;text-align:center;color:var(--text);line-height:1;margin:24px 0}
+.timer-display.warning{color:var(--accent2)}
+.timer-presets{display:flex;gap:8px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+.preset-btn{padding:8px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s}
+.preset-btn.active{background:var(--accent);color:#111;border-color:var(--accent)}
+.round-counter{font-family:var(--font-mono);font-size:12px;color:var(--muted);text-align:center;letter-spacing:2px;margin-bottom:8px}
+
+.face-prompt-card{background:var(--card);border:2px solid var(--accent3);border-radius:12px;padding:20px;text-align:center;margin-bottom:16px}
+.face-prompt-title{font-family:var(--font-display);font-size:28px;color:var(--accent3);margin-bottom:4px}
+.face-prompt-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.face-trait-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.face-trait{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.5px}
+.face-trait span{display:block;font-size:13px;color:var(--text);font-weight:700;margin-top:2px}
+
+.studio-field{margin-bottom:12px}
+.studio-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px}
+.studio-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:var(--font-body);font-size:14px;transition:border-color .2s;outline:none}
+.studio-input:focus{border-color:var(--accent)}
+.studio-input::placeholder{color:var(--muted)}
+.character-card{background:var(--card);border:2px solid var(--accent);border-radius:12px;padding:20px;animation:fadeIn .3s ease}
+.character-card h2{font-family:var(--font-display);font-size:36px;color:var(--accent);margin-bottom:4px}
+
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.stat-num{font-family:var(--font-display);font-size:40px;color:var(--text);line-height:1}
+.stat-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+
+.ach-card{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.ach-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ach-icon.unlocked{background:#c8f13520;border:1px solid #c8f13540}
+.ach-icon.locked{background:var(--bg3);border:1px solid var(--border);filter:grayscale(1);opacity:.4}
+.ach-title{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.ach-desc{font-size:12px;color:var(--muted)}
+
+.streak-badge{display:inline-flex;align-items:center;gap:6px;background:#f5c84215;border:1px solid #f5c84230;border-radius:20px;padding:5px 12px;font-family:var(--font-mono);font-size:12px;color:var(--accent4);font-weight:700}
+.exercise-step{display:flex;gap:10px;margin-bottom:12px}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#111;font-family:var(--font-mono);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;color:var(--muted);line-height:1.6}
+.rating-row{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.rating-item{display:flex;align-items:center;gap:10px}
+.rating-label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:1px;width:72px;text-transform:uppercase}
+.rating-slider{flex:1;-webkit-appearance:none;appearance:none;height:3px;background:var(--bg3);border-radius:2px;outline:none}
+.rating-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer}
+.rating-val{font-family:var(--font-mono);font-size:11px;color:var(--accent);width:20px;text-align:right}
+.moto-card{background:var(--bg3);border-left:3px solid var(--accent);padding:12px 14px;border-radius:0 8px 8px 0;margin-bottom:16px}
+.moto-text{font-family:var(--font-mono);font-size:13px;color:var(--text);font-style:italic;line-height:1.5}
+.section-div{display:flex;align-items:center;gap:8px;margin:20px 0 14px}
+.section-div::after{content:'';flex:1;height:1px;background:var(--border)}
+.notice{background:#c8f13510;border:1px solid #c8f13530;border-radius:8px;padding:10px 12px;font-size:13px;color:var(--accent);margin-bottom:12px;font-family:var(--font-mono)}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="screen-home">
+  <div class="hero">
+    <div class="hero-eyebrow">★ Daily Training App</div>
+    <div class="hero-title">SKETCH<br><span>ATTITUDE</span></div>
+    <p class="hero-sub">Learn expressive character drawing, one day at a time. Inspired by edgy British comic and punk visual traditions.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="goTo('train')">START TRAINING</button>
+      <button class="btn btn-outline" onclick="goTo('principles')">12 PRINCIPLES</button>
+    </div>
+  </div>
+  <hr class="divider">
+  <h3>Today's Motivation</h3>
+  <div class="moto-card"><div class="moto-text" id="daily-quote"></div></div>
+  <h3>Your Progress</h3>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Day streak</div></div>
+    <div class="stat-card"><div class="stat-num">23%</div><div class="stat-label">30-day plan</div></div>
+  </div>
+  <div class="card card-accent">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div><h3 style="margin-bottom:2px">TODAY'S MISSION</h3><div style="font-family:var(--font-mono);font-size:13px;color:var(--text);font-weight:700">Day 7 — Character Faces</div></div>
+      <span class="tag tag-yellow">20 MIN</span>
+    </div>
+    <p style="margin-bottom:12px">Draw 20 faces on one page. Focus on cheekbones, eyelids, grin shapes, and asymmetry.</p>
+    <button class="btn btn-primary" onclick="goTo('train')" style="width:100%">OPEN TODAY'S EXERCISE →</button>
+  </div>
+  <div class="section-div"><h3 style="margin:0">QUICK ACCESS</h3></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <button class="btn btn-outline" onclick="goTo('timer')" style="justify-content:center;padding:14px">⏱ GESTURE TIMER</button>
+    <button class="btn btn-outline" onclick="goTo('studio')" style="justify-content:center;padding:14px">✦ CHARACTER STUDIO</button>
+    <button class="btn btn-outline" onclick="goTo('facelab')" style="justify-content:center;padding:14px">◑ FACE LAB</button>
+    <button class="btn btn-outline" onclick="goTo('progress')" style="justify-content:center;padding:14px">↗ PROGRESS</button>
+  </div>
+</div>
+
+<div class="screen" id="screen-principles">
+  <div style="padding-top:20px">
+    <h3>The Method</h3>
+    <h2 style="margin-bottom:8px">12 PRINCIPLES</h2>
+    <p style="margin-bottom:16px">The complete visual language of expressive punk-inspired character design.</p>
+  </div>
+  <div id="principles-list"></div>
+</div>
+
+<div class="screen" id="screen-train">
+  <div style="padding-top:20px">
+    <h3>Your Journey</h3>
+    <h2 style="margin-bottom:8px">30-DAY PROGRAM</h2>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <p>You're on day 7. Keep going.</p>
+      <span class="tag tag-green">23% DONE</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:23%"></div></div>
+    <div class="notice">Tap any day to open the exercise.</div>
+  </div>
+  <div id="day-phases"></div>
+</div>
+
+<div class="screen" id="screen-timer">
+  <div style="padding-top:20px;text-align:center">
+    <h3>Gesture Timer</h3>
+    <h2 style="margin-bottom:4px">TIMED DRILL MODE</h2>
+    <p style="margin-bottom:20px">Fast drawing preserves energy. Set a time, draw fast, repeat.</p>
+  </div>
+  <div class="timer-presets">
+    <button class="preset-btn active" onclick="setPreset(30,this)">30 SEC</button>
+    <button class="preset-btn" onclick="setPreset(60,this)">60 SEC</button>
+    <button class="preset-btn" onclick="setPreset(120,this)">2 MIN</button>
+    <button class="preset-btn" onclick="setPreset(300,this)">5 MIN</button>
+  </div>
+  <div class="round-counter">ROUND <span id="round-num">1</span> OF <span id="round-total">10</span></div>
+  <div class="timer-display" id="timer-disp">00:30</div>
+  <div class="progress-bar" style="margin-bottom:20px"><div class="progress-fill" id="timer-prog" style="width:100%"></div></div>
+  <div style="display:flex;gap:10px;justify-content:center;margin-bottom:20px">
+    <button class="btn btn-primary" id="timer-btn" onclick="toggleTimer()">START</button>
+    <button class="btn btn-outline" onclick="resetTimer()">RESET</button>
+    <button class="btn btn-outline" onclick="skipRound()">SKIP ▶</button>
+  </div>
+  <div class="card">
+    <h3 style="margin-bottom:8px">POSE PROMPT</h3>
+    <div style="font-family:var(--font-mono);font-size:13px;color:var(--text);line-height:1.7" id="pose-prompt">Slouched figure, hands in pockets, weight on one leg. Feel the gravity.</div>
+    <button class="btn btn-outline" onclick="newPosePrompt()" style="margin-top:10px;width:100%">NEW PROMPT</button>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+    <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">ROUNDS:</span>
+    <input type="range" min="1" max="30" value="10" id="round-setter" oninput="setRounds(this.value)" style="flex:1">
+    <span style="font-family:var(--font-mono);font-size:11px;color:var(--accent)" id="round-display">10</span>
+  </div>
+</div>
+
+<div class="screen" id="screen-facelab">
+  <div style="padding-top:20px">
+    <h3>Anatomy Focus</h3>
+    <h2 style="margin-bottom:8px">FACE LAB</h2>
+    <p style="margin-bottom:16px">Targeted expression and feature training. Hit randomize for a new prompt.</p>
+  </div>
+  <div class="face-prompt-card">
+    <div class="face-prompt-title" id="face-prompt-title">ARROGANT GRIN</div>
+    <div class="face-prompt-desc" id="face-prompt-desc">Upper lip curled asymmetrically. One eyebrow raised. Heavy upper eyelid. Chin slightly forward. Teeth just showing on one side.</div>
+  </div>
+  <div class="face-trait-grid">
+    <div class="face-trait">EYES<span id="ft-eyes">Half-lidded, asymmetric</span></div>
+    <div class="face-trait">JAW<span id="ft-jaw">Sharp, angular</span></div>
+    <div class="face-trait">MOUTH<span id="ft-mouth">Crooked smirk</span></div>
+    <div class="face-trait">ENERGY<span id="ft-energy">Cocky, dominant</span></div>
+  </div>
+  <button class="btn btn-primary" onclick="randomizeFace()" style="width:100%;margin-bottom:12px">↻ RANDOMIZE FACE</button>
+  <div class="sketch-placeholder">[ DRAW YOUR INTERPRETATION HERE ]</div>
+</div>
+
+<div class="screen" id="screen-studio">
+  <div style="padding-top:20px">
+    <h3>Build Your Character</h3>
+    <h2 style="margin-bottom:8px">CHARACTER STUDIO</h2>
+    <p style="margin-bottom:16px">Define a character. Build their identity. Draw them with attitude.</p>
+  </div>
+  <div class="studio-field"><div class="studio-label">Character Name</div><input class="studio-input" id="char-name" placeholder="e.g. Ryn, Zero, Blaze..."></div>
+  <div class="studio-field"><div class="studio-label">Archetype / Vibe</div>
+    <select class="studio-input" id="char-arch"><option value="">Select archetype...</option><option>Antihero</option><option>Streetwise Musician</option><option>Rogue Mechanic</option><option>Mutant Outsider</option><option>Underground DJ</option><option>Biker Ronin</option><option>Punk Witch</option><option>Corporate Dropout</option></select></div>
+  <div class="studio-field"><div class="studio-label">Pose Style</div>
+    <select class="studio-input" id="char-pose"><option value="">Select pose...</option><option>Slouched swagger</option><option>Tense standoff</option><option>Mid-motion stride</option><option>Leaning against wall</option><option>Arms crossed, weight shifted</option><option>Looking over shoulder</option></select></div>
+  <div class="studio-field"><div class="studio-label">Clothing Keywords</div><input class="studio-input" id="char-clothes" placeholder="e.g. oversized jacket, torn tights, platform boots..."></div>
+  <div class="studio-field"><div class="studio-label">Expression</div>
+    <select class="studio-input" id="char-expr"><option value="">Select expression...</option><option>Tired contempt</option><option>Sharp grin</option><option>Cold stare</option><option>Manic energy</option><option>Bitter smirk</option><option>Blank intensity</option></select></div>
+  <div class="studio-field"><div class="studio-label">Notes / Backstory Hook</div><textarea class="studio-input" id="char-notes" rows="3" placeholder="e.g. lost their band, now plays alone on rooftops..."></textarea></div>
+  <button class="btn btn-primary" onclick="buildCharacter()" style="width:100%;margin-bottom:8px">BUILD CHARACTER CARD</button>
+  <button class="btn btn-outline" onclick="randomChar()" style="width:100%">↻ RANDOM PROMPT</button>
+  <div id="char-card-output" style="margin-top:16px"></div>
+</div>
+
+<div class="screen" id="screen-progress">
+  <div style="padding-top:20px">
+    <h3>Your Stats</h3>
+    <h2 style="margin-bottom:16px">PROGRESS</h2>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+    <div class="streak-badge">🔥 7-DAY STREAK</div>
+    <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">KEEP GOING</span>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Days Done</div></div>
+    <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Principles</div></div>
+    <div class="stat-card"><div class="stat-num">140</div><div class="stat-label">Min Practiced</div></div>
+    <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">Gestures</div></div>
+  </div>
+  <div class="section-div"><h3 style="margin:0">30-DAY OVERVIEW</h3></div>
+  <div class="progress-bar" style="height:8px"><div class="progress-fill" style="width:23%"></div></div>
+  <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin:4px 0 16px;text-align:right">7 / 30 DAYS — 23%</div>
+  <div class="section-div"><h3 style="margin:0">ACHIEVEMENTS</h3></div>
+  <div id="achievements-list"></div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="goTo('home')">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 9.5L10 3l7 6.5V17a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg>HOME
+  </button>
+  <button class="nav-btn" id="nav-principles" onclick="goTo('principles')">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 7h6M7 10h6M7 13h4"/></svg>LEARN
+  </button>
+  <button class="nav-btn" id="nav-train" onclick="goTo('train')">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 7v3l2 2"/></svg>TRAIN
+  </button>
+  <button class="nav-btn" id="nav-timer" onclick="goTo('timer')">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10 6v4l2.5 2.5M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>TIMER
+  </button>
+  <button class="nav-btn" id="nav-progress" onclick="goTo('progress')">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 14l4-4 3 3 5-6"/></svg>STATS
+  </button>
+</nav>
+
+<script>
+const PRINCIPLES=[
+  {title:"Draw movement first",short:"Start every character with a gesture or energy line.",why:"Structure without gesture creates stiff, dead figures. The energy line IS the character.",mistakes:"Jumping straight to head construction before establishing the spine curve.",task:"Draw 10 single-line gestures in 5 minutes. No detail. Pure energy."},
+  {title:"Exaggerate the attitude",short:"Characters should rarely stand neutral.",why:"Neutral is forgettable. Hip tilt, forward shoulders, swagger — these tell stories instantly.",mistakes:"Drawing characters straight on, weight evenly distributed, expression blank.",task:"Take a neutral pose sketch and push every angle 30% further."},
+  {title:"The silhouette must read",short:"Recognizable from silhouette alone.",why:"If you fill the character in black and lose the personality, the design has failed.",mistakes:"Relying on details to carry character instead of the underlying shape.",task:"Draw 5 characters as solid black shapes. No interior lines allowed."},
+  {title:"Long and lean proportions",short:"Favor elongated bodies and stylized anatomy.",why:"Realism creates average. Elongation creates distinctive personality.",mistakes:"Drawing heads too large relative to the body, or proportions too grounded.",task:"Redraw a figure with the torso 20% longer and limbs stretched to 8 heads tall."},
+  {title:"Narrow eyes create attitude",short:"Half-lidded eyes, asymmetry, and heavy lids build personality.",why:"Wide open eyes read as innocent or surprised. Heavy lids carry experience, contempt, and cool.",mistakes:"Drawing full circles for irises. Symmetrical eyes that read as cartoonish.",task:"Draw 20 eye pairs varying lid weight, angle, and asymmetry."},
+  {title:"Teeth matter",short:"Mouths and visible teeth carry a lot of character.",why:"A closed mouth hides personality. Stylized teeth convey wildness, menace, and humour.",mistakes:"Avoiding teeth entirely. Drawing teeth as a white rectangle.",task:"Draw 10 different mouth styles: grins, sneers, crooked smiles, open mouths."},
+  {title:"Keep linework messy and alive",short:"Lines should feel energetic, imperfect, layered.",why:"Over-polished lines kill the life in a drawing. Controlled mess is more dynamic than clean perfection.",mistakes:"Erasing and redrawing until the line is 'perfect'. Using rulers for organic forms.",task:"Draw a character without lifting the pen. Then draw it again even faster."},
+  {title:"Hands are expressive",short:"Hands should help communicate character and attitude.",why:"Limp or hidden hands lose 30% of the character's communicative power.",mistakes:"Drawing fists by default. Hiding hands in pockets on every character.",task:"Draw 10 hand gestures: pointing, gripping, loose dangling, splayed tension."},
+  {title:"Clothing builds identity",short:"Outfit and accessories reveal who the character is.",why:"Clothing is visual shorthand for biography, subculture, class, and personality.",mistakes:"Generic clothes on every character. Not using silhouette-shaping garments.",task:"Design 3 characters you can identify by clothes alone, without faces."},
+  {title:"Contrast simple and detailed",short:"Simple body, detailed face — or vice versa.",why:"Complexity without contrast creates visual noise. The eye needs rest to appreciate detail.",mistakes:"Making every part equally detailed. Every element competing for attention.",task:"Draw a character where 70% is flat shapes and 30% is densely detailed."},
+  {title:"Design characters, not humans",short:"Every figure should imply a backstory and point of view.",why:"Generic humans are boring. Attitude, history, and weirdness make memorable characters.",mistakes:"Drawing 'a person standing' instead of 'a specific, particular someone'.",task:"Write 3 sentences about a character's life before drawing them."},
+  {title:"Draw fast to preserve energy",short:"Over-polishing kills attitude. Prioritize life over perfection.",why:"Speed bypasses your self-editing brain and accesses raw instinct and energy.",mistakes:"Spending 2 hours on a single 'perfect' drawing instead of 20 rough ones.",task:"Set a 2-minute limit per drawing. Complete 10 characters in 20 minutes."}
+];
+
+const PHASES=[
+  {days:[1,2,3],label:"GESTURE FOUNDATIONS",desc:"30-second gesture drawings. 20 figures per session. Energy, not detail.",cat:"gesture",mins:15},
+  {days:[4,5,6],label:"ATTITUDE POSES",desc:"10 characters per session. Hip tilt, shoulders, weight, and stance.",cat:"pose",mins:20},
+  {days:[7,8,9],label:"CHARACTER FACES",desc:"Draw 20 faces on one page. Cheekbones, eyelids, grin shapes, asymmetry.",cat:"face",mins:20},
+  {days:[10,11,12],label:"EYES & EXPRESSION",desc:"20 eye variations. Attitude and expression. Heavy lids, asymmetry.",cat:"face",mins:20},
+  {days:[13,14,15],label:"MOUTHS & TEETH",desc:"Grins, crooked smiles, open mouths. Stylized teeth and mouth character.",cat:"face",mins:20},
+  {days:[16,17,18],label:"SILHOUETTE DESIGN",desc:"Create characters as black shapes first. Details come after.",cat:"silhouette",mins:25},
+  {days:[19,20,21],label:"PUNK CHARACTER CREATION",desc:"Design 10 characters — biker, DJ, mutant, mechanic, antihero.",cat:"character",mins:45},
+  {days:[22,23,24],label:"INK MODE",desc:"No eraser, no undo. Bold confident linework only.",cat:"ink",mins:30},
+  {days:[25,26,27],label:"CHARACTER SHEET",desc:"Front view, side view, action pose, facial expressions.",cat:"sheet",mins:45},
+  {days:[28,29,30],label:"BAND CHARACTER FINAL",desc:"Define role, instrument, attitude, clothing, silhouette. Final concept.",cat:"final",mins:45}
+];
+
+const ACHIEVEMENTS=[
+  {icon:"✏️",title:"FIRST SKETCH",desc:"Completed your first exercise",unlocked:true},
+  {icon:"🔥",title:"3-DAY STREAK",desc:"Drew 3 days in a row",unlocked:true},
+  {icon:"⚡",title:"7-DAY STREAK",desc:"A full week of practice",unlocked:true},
+  {icon:"👁️",title:"FACE GRINDER",desc:"Completed 20 face exercises",unlocked:false},
+  {icon:"🖋️",title:"INK SURVIVOR",desc:"Finished ink mode without undoing",unlocked:false},
+  {icon:"💀",title:"SILHOUETTE KING",desc:"5 solid silhouette sessions",unlocked:false},
+  {icon:"🎸",title:"CHARACTER ARCHITECT",desc:"Built 5 character cards in studio",unlocked:false},
+  {icon:"🏆",title:"30-DAY FINISHER",desc:"Completed the full program",unlocked:false}
+];
+
+const QUOTES=["Start loose. Energy before accuracy.","Push the attitude. Neutral is boring.","Let the line wobble. Life beats polish.","Teeth can carry more character than eyes.","Draw the silhouette first. Personality starts in shape.","Fast drawing bypasses your inner critic.","A stiff pose is a dead character.","Exaggerate until it feels wrong — then go further.","Clothing is biography made visible.","The energy line IS the character."];
+
+const FACE_PROMPTS=[
+  {title:"ARROGANT GRIN",desc:"Upper lip curled asymmetrically. One eyebrow raised. Heavy upper eyelid. Chin slightly forward. Teeth just showing on one side.",eyes:"Half-lidded, asymmetric",jaw:"Sharp, angular",mouth:"Crooked smirk",energy:"Cocky, dominant"},
+  {title:"TIRED CONTEMPT",desc:"Heavy drooping eyelids. Flat mouth, corners down slightly. Cheekbones pronounced. Looks right through you.",eyes:"Deeply hooded",jaw:"Relaxed, gaunt",mouth:"Downturned line",energy:"Dismissive, exhausted"},
+  {title:"MANIC ENERGY",desc:"Eyes wide but upper lids still sharp. Teeth fully visible in a tense grin. Eyebrows asymmetric. Tension in the neck.",eyes:"Wide, electric",jaw:"Clenched, tense",mouth:"Strained wide grin",energy:"Unstable, intense"},
+  {title:"COLD STARE",desc:"Almost no expression. Eyelids at mid position. Mouth flat and closed. Everything still. The stillness IS the expression.",eyes:"Mid-lid, symmetrical",jaw:"Hard, defined",mouth:"Closed flat line",energy:"Controlled menace"},
+  {title:"BITTER SMIRK",desc:"One side of mouth pulls up. Eye on that side narrows slightly. Brow on opposite side subtly raised. Inner monologue visible.",eyes:"Uneven, knowing",jaw:"Strong, slightly tilted",mouth:"One-sided lift",energy:"Sardonic, sharp"},
+  {title:"SHARP CONTEMPT",desc:"Upper lip raised slightly, showing edge of teeth. Eyes looking downward under heavy brows. Head tilted back slightly.",eyes:"Hooded, looking down",jaw:"Raised, proud",mouth:"Slight snarl",energy:"Superior, disdainful"}
+];
+
+const POSE_PROMPTS=["Slouched figure, hands in pockets, weight on one leg. Feel the gravity.","Leaning against a wall, arms crossed, staring sideways. Barely interested.","Mid-stride, one shoulder forward, head slightly down. Going somewhere fast.","Crouching tension — coiled, ready, hands loose. About to move.","Standing tall with a slight backward lean. Arms away from body. Owns the space.","Sitting on the ground, knees up, arms resting on knees. Watching. Waiting.","One hand pointing, body leaning into the gesture. The finger does the talking.","Turning to look over the shoulder. The body is still, the head is sharp."];
+
+const RANDOM_CHARS=[
+  {name:"ZERO",arch:"Antihero",pose:"Slouched swagger",clothes:"Military surplus coat, torn shirt, unlaced boots",expr:"Tired contempt",notes:"Former session musician who burned every bridge. Still plays better than anyone in the room."},
+  {name:"RYN",arch:"Streetwise Musician",pose:"Arms crossed, weight shifted",clothes:"Sleeveless denim vest covered in patches, tight jeans, platforms",expr:"Cold stare",notes:"Bassist. Never smiles on stage. Crowds love her for it."},
+  {name:"BLAZE",arch:"Underground DJ",pose:"Mid-motion stride",clothes:"Oversized tracksuit, chain necklace, wraparound shades",expr:"Sharp grin",notes:"Hasn't slept in two days. This is his natural state."},
+  {name:"MOTH",arch:"Punk Witch",pose:"Looking over shoulder",clothes:"Long tattered coat, rings on every finger, heavy boots",expr:"Bitter smirk",notes:"Everyone thinks she's from somewhere else. She lets them think that."},
+  {name:"DRIX",arch:"Rogue Mechanic",pose:"Leaning against wall",clothes:"Oil-stained overalls, one strap hanging, fingerless gloves",expr:"Manic energy",notes:"Fixes things nobody else can. Breaks things nobody else would dare."}
+];
+
+let timerInterval=null,timerSec=30,timerPreset=30,timerRunning=false,roundNum=1,totalRounds=10;
+const completedDays=new Set([1,2,3,4,5,6,7]);
+const completedPrinciples=new Set([0,1,2]);
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById('screen-'+id);
+  if(el)el.classList.add('active');
+  const nb=document.getElementById('nav-'+id);
+  if(nb)nb.classList.add('active');
+  if(id==='principles'&&!document.getElementById('principles-list').children.length)renderPrinciples();
+  if(id==='train'&&!document.getElementById('day-phases').children.length)renderDays();
+  if(id==='progress'&&!document.getElementById('achievements-list').children.length)renderAchievements();
+}
+
+function renderPrinciples(){
+  const el=document.getElementById('principles-list');
+  el.innerHTML=PRINCIPLES.map((p,i)=>`
+    <div class="principle-card ${completedPrinciples.has(i)?'done':''}" onclick="togglePrinciple(${i})">
+      <div class="principle-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="principle-title">${p.title.toUpperCase()}</div>
+      <div class="principle-body">${p.short}</div>
+      <div class="principle-detail" id="pd-${i}">
+        <div class="detail-row"><div class="detail-label">Why it matters</div><div class="detail-text">${p.why}</div></div>
+        <div class="detail-row"><div class="detail-label">Common mistakes</div><div class="detail-text">${p.mistakes}</div></div>
+        <div class="detail-row"><div class="detail-label">Mini exercise</div><div class="detail-text">${p.task}</div></div>
+        <button class="btn ${completedPrinciples.has(i)?'btn-outline':'btn-primary'}" onclick="markPrinciple(event,${i})" style="margin-top:8px;width:100%">${completedPrinciples.has(i)?'✓ DONE':'MARK COMPLETE'}</button>
+      </div>
+    </div>`).join('');
+}
+
+function togglePrinciple(i){document.getElementById('pd-'+i).classList.toggle('open');}
+function markPrinciple(e,i){e.stopPropagation();completedPrinciples.add(i);renderPrinciples();}
+
+function renderDays(){
+  const el=document.getElementById('day-phases');
+  el.innerHTML=PHASES.map(ph=>`
+    <div style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div><h3 style="margin-bottom:2px">${ph.cat.toUpperCase()} PHASE</h3><div style="font-family:var(--font-mono);font-size:13px;color:var(--text)">${ph.label}</div></div>
+        <span class="tag tag-yellow">${ph.mins} MIN</span>
+      </div>
+      <div class="card card-accent" style="padding:12px">
+        <p style="margin-bottom:10px">${ph.desc}</p>
+        <div class="day-grid">${ph.days.map(d=>`<div class="day-cell ${completedDays.has(d)?'done':d===8?'today':d>8?'locked':''}" onclick="openDay(${d})">${d}</div>`).join('')}</div>
+      </div>
+    </div>`).join('');
+}
+
+function openDay(d){
+  const phase=PHASES.find(p=>p.days.includes(d));
+  if(!phase)return;
+  const popup=document.createElement('div');
+  popup.style.cssText='position:fixed;inset:0;background:#000a;z-index:200;display:flex;align-items:flex-end;';
+  popup.innerHTML=`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px 16px 0 0;padding:20px;width:100%;max-width:480px;margin:0 auto;max-height:80vh;overflow-y:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div><h3 style="margin-bottom:2px">DAY ${d}</h3><div style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--text)">${phase.label}</div></div>
+      <button onclick="this.closest('[style*=fixed]').remove()" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer">✕</button>
+    </div>
+    <div class="moto-card" style="margin-bottom:16px"><div class="moto-text">${QUOTES[d%QUOTES.length]}</div></div>
+    <h3 style="margin-bottom:8px">EXERCISE</h3>
+    <div class="exercise-step"><div class="step-num">1</div><div class="step-text">Warm up with 5 fast loose gestures. No detail. Pure line.</div></div>
+    <div class="exercise-step"><div class="step-num">2</div><div class="step-text">${phase.desc}</div></div>
+    <div class="exercise-step"><div class="step-num">3</div><div class="step-text">Review your work. Pick your best result. Note what surprised you.</div></div>
+    <h3 style="margin:16px 0 8px">SELF-RATING</h3>
+    <div class="rating-row">${['Energy','Attitude','Anatomy'].map(r=>`<div class="rating-item"><span class="rating-label">${r}</span><input class="rating-slider" type="range" min="1" max="10" value="5" oninput="this.nextElementSibling.textContent=this.value"><span class="rating-val">5</span></div>`).join('')}</div>
+    <button class="btn btn-primary" onclick="completeDay(${d},this)" style="width:100%;margin-top:16px">${completedDays.has(d)?'✓ COMPLETED':'MARK COMPLETE'}</button>
+  </div>`;
+  popup.addEventListener('click',e=>{if(e.target===popup)popup.remove()});
+  document.body.appendChild(popup);
+}
+
+function completeDay(d,btn){completedDays.add(d);btn.textContent='✓ COMPLETED';btn.classList.replace('btn-primary','btn-outline');btn.closest('[style*=fixed]').remove();renderDays();}
+
+function renderAchievements(){
+  document.getElementById('achievements-list').innerHTML=ACHIEVEMENTS.map(a=>`
+    <div class="ach-card">
+      <div class="ach-icon ${a.unlocked?'unlocked':'locked'}">${a.icon}</div>
+      <div><div class="ach-title">${a.title}</div><div class="ach-desc">${a.desc}</div></div>
+      ${a.unlocked?'<span class="tag tag-green" style="margin-left:auto">EARNED</span>':''}
+    </div>`).join('');
+}
+
+function setPreset(s,btn){timerPreset=s;timerSec=s;timerRunning=false;clearInterval(timerInterval);document.getElementById('timer-btn').textContent='START';document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateTimerDisplay();}
+function updateTimerDisplay(){const m=Math.floor(timerSec/60),s=timerSec%60;const el=document.getElementById('timer-disp');el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');el.className='timer-display'+(timerSec<=5?' warning':'');document.getElementById('timer-prog').style.width=(timerSec/timerPreset*100)+'%';}
+function toggleTimer(){if(timerRunning){clearInterval(timerInterval);timerRunning=false;document.getElementById('timer-btn').textContent='RESUME';}else{timerRunning=true;document.getElementById('timer-btn').textContent='PAUSE';timerInterval=setInterval(()=>{timerSec--;updateTimerDisplay();if(timerSec<=0){clearInterval(timerInterval);timerRunning=false;if(roundNum<totalRounds){roundNum++;document.getElementById('round-num').textContent=roundNum;timerSec=timerPreset;updateTimerDisplay();newPosePrompt();document.getElementById('timer-btn').textContent='START';}else{document.getElementById('timer-btn').textContent='DONE ✓';}}},1000);}}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerSec=timerPreset;roundNum=1;document.getElementById('round-num').textContent=1;document.getElementById('timer-btn').textContent='START';updateTimerDisplay();}
+function skipRound(){clearInterval(timerInterval);timerRunning=false;if(roundNum<totalRounds){roundNum++;document.getElementById('round-num').textContent=roundNum;timerSec=timerPreset;updateTimerDisplay();newPosePrompt();document.getElementById('timer-btn').textContent='START';}}
+function setRounds(v){totalRounds=parseInt(v);document.getElementById('round-total').textContent=v;document.getElementById('round-display').textContent=v;}
+function newPosePrompt(){document.getElementById('pose-prompt').textContent=POSE_PROMPTS[Math.floor(Math.random()*POSE_PROMPTS.length)];}
+function randomizeFace(){const f=FACE_PROMPTS[Math.floor(Math.random()*FACE_PROMPTS.length)];document.getElementById('face-prompt-title').textContent=f.title;document.getElementById('face-prompt-desc').textContent=f.desc;document.getElementById('ft-eyes').textContent=f.eyes;document.getElementById('ft-jaw').textContent=f.jaw;document.getElementById('ft-mouth').textContent=f.mouth;document.getElementById('ft-energy').textContent=f.energy;}
+function buildCharacter(){const name=document.getElementById('char-name').value||'UNNAMED';const arch=document.getElementById('char-arch').value||'Unknown';const pose=document.getElementById('char-pose').value||'—';const clothes=document.getElementById('char-clothes').value||'—';const expr=document.getElementById('char-expr').value||'—';const notes=document.getElementById('char-notes').value||'—';document.getElementById('char-card-output').innerHTML=`<div class="character-card"><span class="tag tag-green" style="margin-bottom:8px">CHARACTER CONCEPT</span><h2>${name.toUpperCase()}</h2><p style="margin-bottom:12px;font-family:var(--font-mono);font-size:12px;color:var(--muted)">${arch.toUpperCase()}</p><hr style="border:none;border-top:1px solid var(--border);margin-bottom:12px"><div style="display:grid;gap:8px"><div><div class="detail-label">Pose</div><div class="detail-text">${pose}</div></div><div><div class="detail-label">Clothing</div><div class="detail-text">${clothes}</div></div><div><div class="detail-label">Expression</div><div class="detail-text">${expr}</div></div><div><div class="detail-label">Backstory</div><div class="detail-text">${notes}</div></div></div><div class="moto-card" style="margin-top:14px"><div class="moto-text" style="font-size:11px">Draw a long-limbed ${arch.toLowerCase()} with ${expr.toLowerCase()} eyes, ${pose.toLowerCase()} stance, and ${clothes.toLowerCase()}.</div></div></div>`;}
+function randomChar(){const c=RANDOM_CHARS[Math.floor(Math.random()*RANDOM_CHARS.length)];document.getElementById('char-name').value=c.name;document.getElementById('char-arch').value=c.arch;document.getElementById('char-pose').value=c.pose;document.getElementById('char-clothes').value=c.clothes;document.getElementById('char-expr').value=c.expr;document.getElementById('char-notes').value=c.notes;}
+
+document.getElementById('daily-quote').textContent='"'+QUOTES[new Date().getDay()%QUOTES.length]+'"';
+updateTimerDisplay();
+</script>
+</body>
+</html>
